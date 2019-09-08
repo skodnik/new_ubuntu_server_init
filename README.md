@@ -1,7 +1,7 @@
 # Инициализация нового сервера
 
 ```
-# git clone git@github.com:skodnik/new_ubuntu_server_init.git init
+# git clone https://github.com/skodnik/new_ubuntu_server_init.git init
 # apt install make
 # cd init
 # make s0
