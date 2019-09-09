@@ -29,4 +29,7 @@ s2:
 	git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 	echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker docker-compose)" >> ~/.zshrc
+	echo "ZSH_THEME=\"agnoster\"" >> ~/.zshrc
+	chsh -s $(which zsh)
+	grep $USER /etc/passwd
 	@echo ">>>>>>>> vim ~/.zshrc source ~/.zshrc <<<<<<<<"
