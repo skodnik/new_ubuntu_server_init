@@ -1,0 +1,8 @@
+# Original file template
+# https://github.com/robbyrussell/oh-my-zsh/blob/master/templates/zshrc.zsh-template
+
+export ZSH="/home/master/.oh-my-zsh"
+ENABLE_CORRECTION="true"
+ZSH_THEME="agnoster"
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker docker-compose)
+source $ZSH/oh-my-zsh.sh
