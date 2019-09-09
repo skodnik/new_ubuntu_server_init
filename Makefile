@@ -28,5 +28,5 @@ s2:
 	rm install.sh
 	git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-	echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting)" >> ~/.zshrc
+	echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker docker-compose)" >> ~/.zshrc
 	@echo ">>>>>>>> vim ~/.zshrc source ~/.zshrc <<<<<<<<"
