@@ -3,6 +3,6 @@
 
 export ZSH="/home/master/.oh-my-zsh"
 ENABLE_CORRECTION="true"
-ZSH_THEME="agnoster"
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker docker-compose)
+ZSH_THEME="avit"
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
