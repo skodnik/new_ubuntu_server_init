@@ -33,3 +33,6 @@ s2:
 	chsh -s $(which zsh)
 	grep $USER /etc/passwd
 	@echo ">>>>>>>> vim ~/.zshrc source ~/.zshrc <<<<<<<<"
+
+st:
+	echo "ZSH_THEME=\"agnoster\"" >> ~/.zshrc
