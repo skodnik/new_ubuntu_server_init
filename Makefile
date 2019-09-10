@@ -17,6 +17,7 @@ s0:
 	ufw deny 22
 	ufw enable
 	ufw status verbose
+	rm -R ~/init
 	@echo ">>>>>>>> rm -R init. Now you need to reboot server. Next connection param: ssh $(NEW_USER)@***.***.***.*** -p $(SSH_PORT) <<<<<<<<"
 
 s1:
