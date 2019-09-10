@@ -20,10 +20,12 @@ s0:
 	@echo ">>>>>>>> Now you need to reboot server. Next connection param: ssh $(NEW_USER)@***.***.***.*** -p $(SSH_PORT) <<<<<<<<"
 
 s1:
+	passwd -l root
 	apt install -y docker docker-compose zsh mc
 	systemctl enable docker
 	wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
 	sh install.sh
+	@echo ">>>>>>>> root passwd was removed. docker docker-compose zsh mc was installed. <<<<<<<<"
 
 s2:
 	rm install.sh
@@ -31,9 +33,10 @@ s2:
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 	echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker docker-compose)" >> ~/.zshrc
 	cp ./configs/zshrc_example ~/.zshrc
-	chsh -s $(which zsh)
-	grep $USER /etc/passwd
+	zsh
+	chsh -s ${which zsh}
+	grep ${USER} /etc/passwd
 	@echo ">>>>>>>> vim ~/.zshrc source ~/.zshrc <<<<<<<<"
 
 st:
-	cp ./configs/zshrc_example ~/.zshrc
+	grep ${USER} /etc/passwd
