@@ -39,5 +39,5 @@ s2:
 	@echo ">>>>>>>> vim ~/.zshrc source ~/.zshrc <<<<<<<<"
 
 st:
-	chsh -s ${which zsh}
-	grep ${NEW_USER} /etc/passwd
+	chsh -s $(which zsh)
+	grep $(NEW_USER) /etc/passwd
