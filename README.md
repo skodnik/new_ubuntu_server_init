@@ -12,6 +12,7 @@
 
 ## Песле загрузки под новым пользователем
 ```
+# git clone https://github.com/skodnik/new_ubuntu_server_init.git init
 # make s1
 # make s2
 ```

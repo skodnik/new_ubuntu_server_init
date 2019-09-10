@@ -2,7 +2,7 @@
 NEW_USER=master
 SSH_PORT=303
 
-# basics install
+# basic install
 s0:
 	apt update && apt upgrade -y
 	apt install -y ufw fail2ban
@@ -17,15 +17,15 @@ s0:
 	ufw deny 22
 	ufw enable
 	ufw status verbose
-	@echo ">>>>>>>> Now you need to reboot server. Next connection param: ssh $(NEW_USER)@***.***.***.*** -p $(SSH_PORT) <<<<<<<<"
+	@echo ">>>>>>>> rm -R init. Now you need to reboot server. Next connection param: ssh $(NEW_USER)@***.***.***.*** -p $(SSH_PORT) <<<<<<<<"
 
 s1:
 	passwd -l root
 	apt install -y docker docker-compose zsh mc
 	systemctl enable docker
 	wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-	sh install.sh
 	@echo ">>>>>>>> root passwd was removed. docker docker-compose zsh mc was installed. <<<<<<<<"
+	sh install.sh
 
 s2:
 	rm install.sh
@@ -34,8 +34,8 @@ s2:
 	echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker docker-compose)" >> ~/.zshrc
 	cp ./configs/zshrc_example ~/.zshrc
 	zsh
-	chsh -s ${which zsh}
-	grep ${USER} /etc/passwd
+	chsh -s ${which zsh} master
+	grep $(NEW_USER) /etc/passwd
 	@echo ">>>>>>>> vim ~/.zshrc source ~/.zshrc <<<<<<<<"
 
 st:
