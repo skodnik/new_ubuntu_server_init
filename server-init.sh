@@ -77,6 +77,6 @@ cat <<-EOF
 
     You'll need to reboot server and connect to server as a new user ${NEW_USER}.
 
-    ssh ${NEW_USER}@***.***.***.*** -p {SSH_PORT}
+    ssh ${NEW_USER}@***.***.***.*** -p ${SSH_PORT}
 
 EOF
