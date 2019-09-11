@@ -43,12 +43,13 @@ echo "\n${YELLOW}>>>>>>>> new sudo user setting up <<<<<<<<${RESET}\n"
 echo "New sudo user name:"
 read NEW_USER
 adduser ${NEW_USER}
-if [ $? -eq 0 ]; then
-    echo OK
-else
+if [ $? -ne 0 ]; then
     exit 1
 fi
 usermod -a -G sudo ${NEW_USER}
+if [ $? -ne 0 ]; then
+    exit 1
+fi
 
 echo "\n${YELLOW}>>>>>>>> ufw setting up <<<<<<<<${RESET}\n"
 echo "New port for ssh:"
