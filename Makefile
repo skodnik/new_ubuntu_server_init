@@ -40,6 +40,6 @@ s2:
 
 st:
 	echo -n Password:
-	read -s password
+	read password
 	echo
 	echo $password
