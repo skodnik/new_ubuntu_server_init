@@ -28,6 +28,7 @@ setup_color() {
 	fi
 }
 
+
 cat <<-EOF
     I can't change your shell automatically because this system does not have chsh.
     ${BLUE}Please manually change your default shell to zsh${RESET}
