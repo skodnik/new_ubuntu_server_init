@@ -41,9 +41,6 @@ apt install -y ufw fail2ban make
 
 echo "\n${YELLOW}new sudo user setup${RESET}\n"
 echo -n "New sudo user name:"
-read -s NEW_USER
-echo -n "New sudo user password:"
-read -s NEW_USER_PASSWORD
+read NEW_USER
 
 echo ${NEW_USER}
-echo ${NEW_USER_PASSWORD}
