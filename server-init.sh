@@ -5,6 +5,9 @@
 # or wget:
 #   sh -c "$(wget -qO- https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh)"
 #
+# without using cache:
+#   sudo sh -c "$(curl -fsSLH 'Cache-Control: no-cache' https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh)"
+
 # As an alternative, you can first download the install script and run it afterwards:
 #   wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh
 #   sh install.sh
@@ -32,10 +35,10 @@ setup_color
 
 cat <<-EOF
 
-    ${GREEN}Let's the party started!${GREEN}
+    ${GREEN}Let's the party started!${RESET}
 
     apt update && apt upgrade
 
 EOF
 
-sudo apt update && sudo apt upgrade -y
+apt update && apt upgrade -y
