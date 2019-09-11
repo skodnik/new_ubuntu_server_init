@@ -36,11 +36,12 @@ setup_color
 echo -n "\n${YELLOW}apt update, upgrade${RESET}\n"
 apt update && apt upgrade -y
 
-echo "\n${YELLOW}install ufw fail2ban make${RESET}\n"
+echo "\n${YELLOW}install ufw fail2ban make${RESET}"
 apt install -y ufw fail2ban make
 
-echo "\n${YELLOW}new sudo user setup${RESET}\n"
+echo "\n${YELLOW}new sudo user setup${RESET}"
 echo -n "New sudo user name:"
 read NEW_USER
-
-echo ${NEW_USER}
+adduser ${NEW_USER}
+usermod -a -G sudo ${NEW_USER}
+echo -n "New sudo user ${NEW_USER} was added successfully!"
