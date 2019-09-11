@@ -30,7 +30,7 @@ setup_color() {
 
 setup_color
 
-echo "\n${YELLOW}>>>>>>>> git clone <<<<<<<<${RESET}\n"
+echo "\n${YELLOW}>>>>>>>> git clone github.com/skodnik/wordpress-docker.git <<<<<<<<${RESET}\n"
 echo "Github password for skodnik account:"
 stty -echo
 read PASSWORD
