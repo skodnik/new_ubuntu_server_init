@@ -35,6 +35,12 @@ s2:
 	echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker docker-compose)" >> ~/.zshrc
 	cp ./configs/zshrc_example ~/.zshrc
 
+oh-my-zsh:
+	curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -o install-oh-my-zsh.sh;
+	sh install-oh-my-zsh.sh
+	rm install-oh-my-zsh.sh
+	chsh -s /usr/bin/zsh
+
 st:
 	chsh -s $(which zsh) $(whoami)
 	grep $(NEW_USER) /etc/passwd
