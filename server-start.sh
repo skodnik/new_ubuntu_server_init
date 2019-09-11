@@ -30,8 +30,7 @@ setup_color() {
 
 setup_color
 
-echo "\n${YELLOW}>>>>>>>> start zsh <<<<<<<<${RESET}\n"
-zsh
+echo "\n${YELLOW}>>>>>>>> start zsh install oh-my-zsh <<<<<<<<${RESET}\n"
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
