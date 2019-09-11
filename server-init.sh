@@ -38,4 +38,4 @@ cat <<-EOF
 
 EOF
 
-apt update && apt upgrade -y
+sudo apt update && sudo apt upgrade -y
