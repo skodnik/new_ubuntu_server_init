@@ -32,6 +32,10 @@ setup_color
 
 cat <<-EOF
 
-    ${BLUE}Please manually change your default shell to zsh${RESET}
+    ${GREEN}Let's the party started!${GREEN}
+
+    apt update && apt upgrade
 
 EOF
+
+apt update && apt upgrade -y
