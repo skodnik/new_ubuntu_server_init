@@ -75,8 +75,8 @@ cat <<-EOF
 
     ${GREEN}All done. I hope so...${RESET}
 
-    You'll need to reboot server and connect to server as a new user ${NEW_USER}.
+    You'll need to reboot server and connect as a new user ${NEW_USER}.
 
-    ssh ${NEW_USER}@***.***.***.*** -p ${SSH_PORT}
+    ${BOLD}ssh ${NEW_USER}@***.***.***.*** -p ${SSH_PORT}${RESET}
 
 EOF
