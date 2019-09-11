@@ -47,7 +47,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 usermod -a -G sudo ${NEW_USER}
-if [ $? -ne 0 ]; then
+if [ $? -eq 0 ]; then
+    echo "User ${NEW_USER} has become sudo"
+else
+    echo "Something wrong with making sudo user"
     exit 1
 fi
 
