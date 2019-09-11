@@ -33,20 +33,19 @@ setup_color() {
 
 setup_color
 
-echo -n "\n${YELLOW}>>>>>>>> apt update, upgrade <<<<<<<<${RESET}\n"
+echo "\n${YELLOW}>>>>>>>> apt update, upgrade <<<<<<<<${RESET}\n"
 apt update && apt upgrade -y
 
 echo "\n${YELLOW}>>>>>>>> install ufw fail2ban make <<<<<<<<${RESET}"
 apt install -y ufw fail2ban make
 
 echo "\n${YELLOW}>>>>>>>> new sudo user setting up <<<<<<<<${RESET}"
-echo -n "New sudo user name:"
+echo "New sudo user name:"
 read NEW_USER
 adduser ${NEW_USER}
 usermod -a -G sudo ${NEW_USER}
-echo -n "New sudo user ${BOLD}${NEW_USER}${RESET} was added successfully!"
 
 echo "\n${YELLOW}>>>>>>>> ufw setting up <<<<<<<<${RESET}"
-echo -n "New port for ssh:"
+echo "New port for ssh:"
 read SSH_PORT
 echo "Port ${SSH_PORT}" >> /etc/ssh/sshd_config
