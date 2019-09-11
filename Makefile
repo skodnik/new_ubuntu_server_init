@@ -24,7 +24,6 @@ s0:
 
 s1:
 	rm -R /root/init
-	rm /root/install.sh
 	passwd -l root
 	apt install -y docker docker-compose mc
 	systemctl enable docker
