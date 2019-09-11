@@ -33,15 +33,15 @@ setup_color() {
 
 setup_color
 
-echo -n "\n${YELLOW}apt update, upgrade${RESET}\n"
+echo -n "\n${YELLOW}>>>>>>>> apt update, upgrade <<<<<<<<${RESET}\n"
 apt update && apt upgrade -y
 
-echo "\n${YELLOW}install ufw fail2ban make${RESET}"
+echo "\n${YELLOW}>>>>>>>> install ufw fail2ban make <<<<<<<<${RESET}"
 apt install -y ufw fail2ban make
 
-echo "\n${YELLOW}new sudo user setup${RESET}"
+echo "\n${YELLOW}>>>>>>>> new sudo user setting up <<<<<<<<${RESET}"
 echo -n "New sudo user name:"
 read NEW_USER
 adduser ${NEW_USER}
 usermod -a -G sudo ${NEW_USER}
-echo -n "New sudo user ${NEW_USER} was added successfully!"
+echo -n "New sudo user ${BOLD}${NEW_USER}${RESET} was added successfully!"
