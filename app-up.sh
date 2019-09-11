@@ -32,7 +32,9 @@ setup_color
 
 echo "\n${YELLOW}>>>>>>>> git clone <<<<<<<<${RESET}\n"
 echo "Github password for skodnik account:"
+stty -echo
 read PASSWORD
+stty echo
 git clone https://skodnik:${PASSWORD}@github.com/skodnik/wordpress-docker.git ~/www
 if [ $? -eq 0 ]; then
     echo "${GREEN}Cloning wordpress-docker.git successfully!${RESET}"
