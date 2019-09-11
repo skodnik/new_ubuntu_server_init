@@ -39,7 +39,4 @@ s2:
 	@echo ">>>>>>>> vim ~/.zshrc source ~/.zshrc <<<<<<<<"
 
 st:
-	echo -n Password:
-	read password
-	echo
-	echo $password
+	PASSWORD ?= $(shell stty -echo; read -p "Password: " pwd; stty echo; echo $$pwd)
