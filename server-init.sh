@@ -42,13 +42,13 @@ apt install -y ufw fail2ban make
 echo "\n${YELLOW}>>>>>>>> new sudo user setting up <<<<<<<<${RESET}\n"
 echo "New sudo user name:"
 read NEW_USER
-adduser ${NEW_USER}
+adduser --debug ${NEW_USER}
 if [ $? -ne 0 ]; then
     exit 1
 fi
 usermod -a -G sudo ${NEW_USER}
 if [ $? -eq 0 ]; then
-    echo "${YELLOW}User ${NEW_USER} has become sudo!${RESET}"
+    echo "${GREEN}User ${NEW_USER} has become sudo!${RESET}"
 else
     echo "${RED}Something wrong with making sudo user!${RESET}"
     exit 1
