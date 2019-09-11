@@ -33,16 +33,8 @@ setup_color() {
 
 setup_color
 
-cat <<-EOF
-
-    ${GREEN}Let's the party started!${RESET}
-
-    apt update && apt upgrade
-
-EOF
-
-echo "${YELLOW}apt update, upgrade${RESET}"
+echo -n "\n${YELLOW}apt update, upgrade${RESET}\n"
 apt update && apt upgrade -y
 
-echo "${YELLOW}install ufw fail2ban make${RESET}"
+echo "\n${YELLOW}install ufw fail2ban make${RESET}\n"
 apt install -y ufw fail2ban make
