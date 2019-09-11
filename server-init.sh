@@ -40,5 +40,5 @@ cat <<-EOF
     apt update && apt upgrade
 
 EOF
-
+echo "${YELLOW}Zsh is not installed.${RESET} Please install zsh first."
 apt update && apt upgrade -y
