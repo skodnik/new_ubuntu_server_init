@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
-#
+
 # This script should be run via curl:
 #   sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh)"
 # or wget:
 #   sh -c "$(wget -qO- https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh)"
 #
-# without using cache:
-#   sudo sh -c "$(curl -fsSLH 'Cache-Control: no-cache' https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh)"
-
 # As an alternative, you can first download the install script and run it afterwards:
 #   wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh
 #   sh install.sh
@@ -57,4 +54,17 @@ fi
 echo "\n${YELLOW}>>>>>>>> ufw setting up <<<<<<<<${RESET}\n"
 echo "New port for ssh:"
 read SSH_PORT
-#echo "Port ${SSH_PORT}" >> /etc/ssh/sshd_config
+echo "Port ${SSH_PORT}" >> /etc/ssh/sshd_config
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow http
+ufw allow https
+ufw allow ${SSH_PORT}
+ufw deny 22
+ufw enable
+ufw status verbose
+
+
+echo "\n${YELLOW}>>>>>>>> install docker docker-compose mc zsh <<<<<<<<${RESET}\n"
+apt install -y docker docker-compose mc zsh
+systemctl enable docker
