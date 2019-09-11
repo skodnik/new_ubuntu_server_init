@@ -45,3 +45,8 @@ read NEW_USER
 adduser ${NEW_USER}
 usermod -a -G sudo ${NEW_USER}
 echo -n "New sudo user ${BOLD}${NEW_USER}${RESET} was added successfully!"
+
+echo "\n${YELLOW}>>>>>>>> ufw setting up <<<<<<<<${RESET}"
+echo -n "New port for ssh:"
+read SSH_PORT
+echo "Port ${SSH_PORT}" >> /etc/ssh/sshd_config
