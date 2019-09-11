@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
 # This script should be run via curl:
-#   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+#   sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh)"
 # or wget:
-#   sh -c "$(wget -qO- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+#   sh -c "$(wget -qO- https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh)"
 #
 # As an alternative, you can first download the install script and run it afterwards:
-#   wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+#   wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh
 #   sh install.sh
 
 setup_color() {
@@ -28,4 +28,7 @@ setup_color() {
 	fi
 }
 
-echo "${BLUE}Test colors...${RESET}"
+cat <<-EOF
+    I can't change your shell automatically because this system does not have chsh.
+    ${BLUE}Please manually change your default shell to zsh${RESET}
+EOF
