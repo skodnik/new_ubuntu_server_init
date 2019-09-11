@@ -64,7 +64,19 @@ ufw deny 22
 ufw enable
 ufw status verbose
 
-
 echo "\n${YELLOW}>>>>>>>> install docker docker-compose mc zsh <<<<<<<<${RESET}\n"
 apt install -y docker docker-compose mc zsh
 systemctl enable docker
+
+echo "\n${YELLOW}>>>>>>>> root password expiry information change <<<<<<<<${RESET}\n"
+passwd -l root
+
+cat <<-EOF
+
+    ${GREEN}All done. I hope so...${RESET}
+
+    You'll need to reboot server and connect to server as a new user ${NEW_USER}.
+
+    ssh ${NEW_USER}@***.***.***.*** -p {SSH_PORT}
+
+EOF
