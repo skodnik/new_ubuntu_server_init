@@ -5,7 +5,8 @@ SSH_PORT=303
 # basic install
 s0:
 	apt update && apt upgrade -y
-	apt install -y ufw fail2ban
+	apt install -y ufw fail2ban zsh
+	@echo ">>>>>>>> Creating new sudo user: $(NEW_USER) <<<<<<<<"
 	adduser $(NEW_USER)
 	usermod -a -G sudo $(NEW_USER)
 	echo "Port $(SSH_PORT)" >> /etc/ssh/sshd_config
@@ -17,12 +18,13 @@ s0:
 	ufw deny 22
 	ufw enable
 	ufw status verbose
+	cd ~
 	rm -R ~/init
 	@echo ">>>>>>>> rm -R init. Now you need to reboot server. Next connection param: ssh $(NEW_USER)@***.***.***.*** -p $(SSH_PORT) <<<<<<<<"
 
 s1:
 	passwd -l root
-	apt install -y docker docker-compose zsh mc
+	apt install -y docker docker-compose mc
 	systemctl enable docker
 	wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
 	@echo ">>>>>>>> root passwd was removed. docker docker-compose zsh mc was installed. <<<<<<<<"
