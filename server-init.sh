@@ -40,5 +40,9 @@ cat <<-EOF
     apt update && apt upgrade
 
 EOF
-echo "${YELLOW}Zsh is not installed.${RESET} Please install zsh first."
+
+echo "${YELLOW}apt update, upgrade${RESET}"
 apt update && apt upgrade -y
+
+echo "${YELLOW}install ufw fail2ban make${RESET}"
+apt install -y ufw fail2ban make
