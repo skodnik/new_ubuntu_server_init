@@ -6,18 +6,16 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_
 ```
 
 ## После загрузки под новым пользователем
+### Настройка zsh и oh-my-zsh
 ```
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-start.sh)"
-```
+zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
-## При первом подключении под root
-```
-# git clone https://github.com/skodnik/new_ubuntu_server_init.git ~/init && apt install make && cd ~/init && make s0
-# reboot
-```
+wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/configs/zshrc_example
+cp zshrc_example ~/.zshrc
+rm zshrc_example
 
-## Песле загрузки под новым пользователем
-```
-$ sudo git clone https://github.com/skodnik/new_ubuntu_server_init.git init && cd ~/init && sudo make s1
-$ sudo make s2
+source ~/.zshrc
 ```
