@@ -83,10 +83,9 @@ cat <<-EOF
 
 EOF
 
-echo "Reboot now?"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) reboot; break;;
-        No ) exit;;
-    esac
-done
+read -p "Reboot now? (y/n) " -n 1 -r
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit 1
+fi
+reboot
