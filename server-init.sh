@@ -9,6 +9,8 @@
 #   wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh
 #   sh install.sh
 
+MY_IP=$(curl wtfismyip.com/text)
+
 setup_color() {
 	# Only use colors if connected to a terminal
 	if [ -t 1 ]; then
@@ -77,6 +79,6 @@ cat <<-EOF
 
     You'll need to reboot server and connect as a new user ${NEW_USER}.
 
-    ${BOLD}ssh ${NEW_USER}@***.***.***.*** -p ${SSH_PORT}${RESET}
+    ${BOLD}ssh ${NEW_USER}@${MY_IP} -p ${SSH_PORT}${RESET}
 
 EOF
