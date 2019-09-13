@@ -82,3 +82,12 @@ cat <<-EOF
     ${BOLD}ssh ${NEW_USER}@${MY_IP} -p ${SSH_PORT}${RESET}
 
 EOF
+
+while true; do
+    read -p "Reboot?" yn
+    case $yn in
+        [Yy]* ) make install; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
