@@ -83,7 +83,7 @@ cat <<-EOF
 
 EOF
 
-read -p "Reboot now? (y/n) " -n 1 -r
+read -p "Reboot now? (y/n) "
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
     exit 1
