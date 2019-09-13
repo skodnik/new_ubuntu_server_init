@@ -86,7 +86,7 @@ EOF
 while true; do
     read -p "Reboot?" yn
     case $yn in
-        [Yy]* ) make install; break;;
+        [Yy]* ) reboot; break;;
         [Nn]* ) exit;;
         * ) echo "Please answer yes or no.";;
     esac
