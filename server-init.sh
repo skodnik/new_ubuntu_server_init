@@ -79,15 +79,14 @@ cat <<-EOF
 
     You'll need to reboot server and connect as a new user ${NEW_USER}.
 
-    ${BOLD}ssh ${NEW_USER}@${MY_IP} -p ${SSH_PORT}${RESET}
+    ${BLUE}ssh ${NEW_USER}@${MY_IP} -p ${SSH_PORT}${RESET}
 
 EOF
 
-while true; do
-    read -p "Reboot?" yn
+echo "Reboot now?"
+select yn in "Yes" "No"; do
     case $yn in
-        [Yy]* ) reboot; break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer yes or no.";;
+        Yes ) reboot; break;;
+        No ) exit;;
     esac
 done
