@@ -9,6 +9,17 @@
 #   wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh
 #   sh install.sh
 
+read -r -p "Init server now? (y/n): " response
+case "$response" in
+    [yY][eE][sS]|[yY])
+        echo "Start."
+        ;;
+    *)
+        echo "Ok. Exit."
+        exit 0
+        ;;
+esac
+
 MY_IP=$(curl -s wtfismyip.com/text)
 
 setup_color() {
