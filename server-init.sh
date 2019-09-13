@@ -9,7 +9,7 @@
 #   wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh
 #   sh install.sh
 
-MY_IP=$(curl wtfismyip.com/text)
+MY_IP=$(curl -s wtfismyip.com/text)
 
 setup_color() {
 	# Only use colors if connected to a terminal
@@ -86,6 +86,7 @@ EOF
 read -r -p "Reboot now? (y/n): " response
 case "$response" in
     [yY][eE][sS]|[yY])
+        echo "Rebooting, see you later."
         reboot
         ;;
     *)
