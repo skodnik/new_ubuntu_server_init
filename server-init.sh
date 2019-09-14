@@ -12,7 +12,8 @@
 read -r -p "Init server now? (y/n): " response
 case "$response" in
     [yY][eE][sS]|[yY])
-        echo "Start."
+        echo "Start. "
+        date
         ;;
     *)
         echo "Ok. Exit."
@@ -44,10 +45,11 @@ setup_color() {
 setup_color
 
 echo "\n${YELLOW}>>>>>>>> apt update, upgrade <<<<<<<<${RESET}\n"
-apt update && apt upgrade -y
+df -Th
+apt update && apt list --upgradable && apt upgrade -y
 
 echo "\n${YELLOW}>>>>>>>> install ufw fail2ban make <<<<<<<<${RESET}\n"
-apt install -y ufw fail2ban make
+apt install -y ufw fail2ban make ntp
 
 echo "\n${YELLOW}>>>>>>>> new sudo user setting up <<<<<<<<${RESET}\n"
 echo "New sudo user name:"
@@ -79,10 +81,22 @@ ufw status verbose
 
 echo "\n${YELLOW}>>>>>>>> install docker docker-compose mc zsh <<<<<<<<${RESET}\n"
 apt install -y docker docker-compose mc zsh
-systemctl enable docker
 
-echo "\n${YELLOW}>>>>>>>> root password expiry information change <<<<<<<<${RESET}\n"
+echo "\n${YELLOW}>>>>>>>> systemctl enable docker ntp <<<<<<<<${RESET}\n"
+systemctl enable docker
+systemctl enable ntp
+
+echo "\n${YELLOW}>>>>>>>> cleaning <<<<<<<<${RESET}\n"
+apt -y autoremove
+apt -y autoclean
+df -Th
+
+echo "\n${YELLOW}>>>>>>>> settingup root password expiry information change <<<<<<<<${RESET}\n"
 passwd -l root
+date
+
+# Настройка временной зоны
+# timedatectl set-timezone Europe/Moscow
 
 cat <<-EOF
 
