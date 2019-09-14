@@ -50,7 +50,7 @@ echo "\n${YELLOW}>>>>>>>> apt update, upgrade <<<<<<<<${RESET}\n"
 df -Th
 apt update && apt list --upgradable && apt upgrade -y
 
-echo "\n${YELLOW}>>>>>>>> install ufw fail2ban make <<<<<<<<${RESET}\n"
+echo "\n${YELLOW}>>>>>>>> install ufw fail2ban make ntp <<<<<<<<${RESET}\n"
 apt install -y ufw fail2ban make ntp
 
 echo "\n${YELLOW}>>>>>>>> new sudo user setting up <<<<<<<<${RESET}\n"
