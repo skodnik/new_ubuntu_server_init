@@ -9,6 +9,8 @@
 5. systemctl enable docker ntp
 6. "Сбрасывает" пароль для рута.
 
+> todo: Подумать над настройками fail2ban
+
 ```
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh)"
 ```
