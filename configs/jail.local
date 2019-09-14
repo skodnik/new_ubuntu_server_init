@@ -1,0 +1,9 @@
+[DEFAULT]
+ignoreip = 127.0.0.1/8 192.168.0.0/24
+
+[ssh-iptables]
+enabled  = true
+port = ssh
+filter = sshd
+action = iptables[name=sshd, port=ssh, protocol=tcp]
+logpath = /var/log/secure

@@ -9,6 +9,8 @@
 #   wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init.sh
 #   sh install.sh
 
+uname -a
+
 read -r -p "Init server now? (y/n): " response
 case "$response" in
     [yY][eE][sS]|[yY])
@@ -58,7 +60,7 @@ adduser --debug ${NEW_USER}
 if [ $? -ne 0 ]; then
     exit 1
 fi
-usermod -a -G sudo ${NEW_USER}
+usermod -aG sudo ${NEW_USER}
 if [ $? -eq 0 ]; then
     echo "${GREEN}User ${NEW_USER} has become sudo!${RESET}"
 else
@@ -70,6 +72,7 @@ echo "\n${YELLOW}>>>>>>>> ufw setting up <<<<<<<<${RESET}\n"
 echo "New port for ssh:"
 read SSH_PORT
 echo "Port ${SSH_PORT}" >> /etc/ssh/sshd_config
+echo "PermitRootLogin no" >> /etc/ssh/sshd_config
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow http
@@ -79,8 +82,8 @@ ufw deny 22
 ufw enable
 ufw status verbose
 
-echo "\n${YELLOW}>>>>>>>> install docker docker-compose mc zsh <<<<<<<<${RESET}\n"
-apt install -y docker docker-compose mc zsh
+echo "\n${YELLOW}>>>>>>>> install docker docker-compose mc ncdu zsh <<<<<<<<${RESET}\n"
+apt install -y docker docker-compose mc ncdu zsh
 
 echo "\n${YELLOW}>>>>>>>> systemctl enable docker ntp <<<<<<<<${RESET}\n"
 systemctl enable docker
@@ -92,10 +95,10 @@ apt -y autoclean
 df -Th
 
 echo "\n${YELLOW}>>>>>>>> settingup root password expiry information change <<<<<<<<${RESET}\n"
+usermod -aG docker ${NEW_USER}
 passwd -l root
 date
 
-# Настройка временной зоны
 # timedatectl set-timezone Europe/Moscow
 
 cat <<-EOF
