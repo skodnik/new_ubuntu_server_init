@@ -87,8 +87,10 @@ echo "\n${YELLOW}>>>>>>>> install docker docker-compose mc ncdu zsh <<<<<<<<${RE
 #apt install -y docker docker-compose mc ncdu zsh
 apt install -y mc ncdu zsh
 
-echo "Install docker and docker-compose? (y/n): "
-read DOCKER_INSTALL
+#echo "Install docker and docker-compose? (y/n): "
+#read DOCKER_INSTALL
+
+read -r -p "Install docker and docker-compose? (y/n): " DOCKER_INSTALL
 
 if [ $DOCKER_INSTALL = 'y' ]
 then
