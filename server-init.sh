@@ -14,7 +14,7 @@ uname -a
 read -r -p "Init server now? (y/n): " response
 case "$response" in
     [yY][eE][sS]|[yY])
-        echo "Start. "
+        echo "Start."
         date
         ;;
     *)
@@ -71,8 +71,9 @@ fi
 echo "\n${YELLOW}>>>>>>>> ufw setting up <<<<<<<<${RESET}\n"
 echo "New port for ssh:"
 read SSH_PORT
-echo "Port ${SSH_PORT}" >> /etc/ssh/sshd_config
-echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+echo -e "Port ${SSH_PORT}\nPermitRootLogin no" >> /etc/ssh/sshd_config
+#echo "Port ${SSH_PORT}" >> /etc/ssh/sshd_config
+#echo "PermitRootLogin no" >> /etc/ssh/sshd_config
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow http
@@ -83,7 +84,23 @@ ufw enable
 ufw status verbose
 
 echo "\n${YELLOW}>>>>>>>> install docker docker-compose mc ncdu zsh <<<<<<<<${RESET}\n"
-apt install -y docker docker-compose mc ncdu zsh
+#apt install -y docker docker-compose mc ncdu zsh
+apt install -y mc ncdu zsh
+
+# https://docs.docker.com/install/linux/docker-ce/ubuntu/
+apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+apt-key fingerprint 0EBFCD88
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+apt update
+apt install docker-ce docker-ce-cli containerd.io
+
+# https://docs.docker.com/compose/install/
+curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 
 echo "\n${YELLOW}>>>>>>>> systemctl enable docker ntp <<<<<<<<${RESET}\n"
 systemctl enable docker
