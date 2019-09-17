@@ -91,7 +91,6 @@ apt install -y mc ncdu zsh
 #read DOCKER_INSTALL
 
 read -r -p "Install docker and docker-compose? (y/n): " DOCKER_INSTALL
-
 if [ $DOCKER_INSTALL = 'y' ]
 then
     # https://docs.docker.com/install/linux/docker-ce/ubuntu/
@@ -124,7 +123,11 @@ usermod -aG docker ${NEW_USER}
 passwd -l root
 date
 
-# timedatectl set-timezone Europe/Moscow
+read -r -p "Set timezone Europe/Moscow? (y/n): " SET_TIMEZONE
+if [ $SET_TIMEZONE = 'y' ]
+then
+    timedatectl set-timezone Europe/Moscow
+fi
 
 cat <<-EOF
 
