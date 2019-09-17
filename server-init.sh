@@ -71,8 +71,8 @@ fi
 echo "\n${YELLOW}>>>>>>>> ufw setting up <<<<<<<<${RESET}\n"
 echo "New port for ssh:"
 read SSH_PORT
-echo -e "Port ${SSH_PORT}\nPermitRootLogin no" >> /etc/ssh/sshd_config
-#echo "Port ${SSH_PORT}" >> /etc/ssh/sshd_config
+#echo -e "Port ${SSH_PORT}\nPermitRootLogin no" >> /etc/ssh/sshd_config
+echo "Port ${SSH_PORT}" >> /etc/ssh/sshd_config
 #echo "PermitRootLogin no" >> /etc/ssh/sshd_config
 ufw default deny incoming
 ufw default allow outgoing
@@ -96,7 +96,7 @@ add-apt-repository \
    $(lsb_release -cs) \
    stable"
 apt update
-apt install docker-ce docker-ce-cli containerd.io
+apt install -y docker-ce docker-ce-cli containerd.io
 
 # https://docs.docker.com/compose/install/
 curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
