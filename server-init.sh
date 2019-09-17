@@ -73,7 +73,7 @@ echo "New port for ssh:"
 read SSH_PORT
 #echo -e "Port ${SSH_PORT}\nPermitRootLogin no" >> /etc/ssh/sshd_config
 echo "Port ${SSH_PORT}" >> /etc/ssh/sshd_config
-#echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+echo "PermitRootLogin no" >> /etc/ssh/sshd_config
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow http
