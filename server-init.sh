@@ -87,23 +87,29 @@ echo "\n${YELLOW}>>>>>>>> install docker docker-compose mc ncdu zsh <<<<<<<<${RE
 #apt install -y docker docker-compose mc ncdu zsh
 apt install -y mc ncdu zsh
 
-# https://docs.docker.com/install/linux/docker-ce/ubuntu/
-apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-apt-key fingerprint 0EBFCD88
-add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-apt update
-apt install -y docker-ce docker-ce-cli containerd.io
+echo "Install docker and docker-compose? (y/n): "
+read DOCKER_INSTALL
 
-# https://docs.docker.com/compose/install/
-curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
+if [ $DOCKER_INSTALL = 'y' ]
+then
+    # https://docs.docker.com/install/linux/docker-ce/ubuntu/
+    apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    apt-key fingerprint 0EBFCD88
+    add-apt-repository \
+       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+       $(lsb_release -cs) \
+       stable"
+    apt update
+    apt install -y docker-ce docker-ce-cli containerd.io
 
-echo "\n${YELLOW}>>>>>>>> systemctl enable docker ntp <<<<<<<<${RESET}\n"
-systemctl enable docker
+    # https://docs.docker.com/compose/install/
+    curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+
+    systemctl enable docker
+fi
+
 systemctl enable ntp
 
 echo "\n${YELLOW}>>>>>>>> cleaning <<<<<<<<${RESET}\n"
