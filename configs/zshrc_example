@@ -1,7 +1,7 @@
 # Original file template
 # https://github.com/robbyrussell/oh-my-zsh/blob/master/templates/zshrc.zsh-template
 
-export ZSH="/home/master/.oh-my-zsh"
+export ZSH="/home/${USER}/.oh-my-zsh"
 ENABLE_CORRECTION="true"
 ZSH_THEME="avit"
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
