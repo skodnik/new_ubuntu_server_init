@@ -1,7 +1,5 @@
 # Инициализация нового сервера
 
-# Ubuntu 18.04
-
 ## При первом подключении под root
 
 1. Устанавливает ufw fail2ban make ntp.
@@ -15,7 +13,11 @@
 > todo: Подумать над настройками fail2ban
 
 ```
+Ubuntu 18.04
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_ubuntu_1804.sh)"
+
+CentOS 7
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_centos_7.sh)"
 ```
 
 ## После загрузки под новым пользователем
@@ -30,10 +32,4 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 4. Применение новых настроек.
 ```
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting && wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/configs/zshrc_example && cp zshrc_example ~/.zshrc && rm zshrc_example && source ~/.zshrc
-```
-
-# CentOS 7
-
-```
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_centos_7.sh)"
 ```
