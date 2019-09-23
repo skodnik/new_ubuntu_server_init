@@ -48,19 +48,27 @@ setup_color
 
 echo "\n${YELLOW}>>>>>>>> apt update, upgrade <<<<<<<<${RESET}\n"
 df -Th
-apt update && apt list --upgradable && apt upgrade -y
+yum upgrade -y
 
-echo "\n${YELLOW}>>>>>>>> install ufw fail2ban make ntp <<<<<<<<${RESET}\n"
-apt install -y ufw fail2ban make ntp
+echo "\n${YELLOW}>>>>>>>> install ufw fail2ban ntp <<<<<<<<${RESET}\n"
+yum install epel-release -y
+# yum install --enablerepo="epel" ufw fail2ban -y
+yum install ufw fail2ban ntp -y
 
 echo "\n${YELLOW}>>>>>>>> new sudo user setting up <<<<<<<<${RESET}\n"
 echo "New sudo user name:"
 read NEW_USER
-adduser --debug ${NEW_USER}
+adduser ${NEW_USER}
 if [ $? -ne 0 ]; then
+    echo "${RED}User ${NEW_USER} was not added!${RESET}"
     exit 1
 fi
-usermod -aG sudo ${NEW_USER}
+passwd ${NEW_USER}
+if [ $? -ne 0 ]; then
+    echo "${RED}Password for user ${NEW_USER} was not created!${RESET}"
+    exit 1
+fi
+usermod -aG wheel ${NEW_USER}
 if [ $? -eq 0 ]; then
     echo "${GREEN}User ${NEW_USER} has become sudo!${RESET}"
 else
