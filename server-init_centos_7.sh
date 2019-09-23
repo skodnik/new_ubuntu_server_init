@@ -53,11 +53,12 @@ yum upgrade -y
 echo "\n${YELLOW}>>>>>>>> install ufw fail2ban ntp <<<<<<<<${RESET}\n"
 yum install epel-release -y
 # yum install --enablerepo="epel" ufw fail2ban -y
-yum install ufw fail2ban ntp -y
+yum install ufw fail2ban ntp git -y
 
 echo "\n${YELLOW}>>>>>>>> new sudo user setting up <<<<<<<<${RESET}\n"
 echo "New sudo user name:"
 read NEW_USER
+# https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-centos-quickstart
 adduser ${NEW_USER}
 if [ $? -ne 0 ]; then
     echo "${RED}User ${NEW_USER} was not added!${RESET}"
@@ -116,18 +117,18 @@ then
     curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
 
-    systemctl enable docker
+    usermod -aG docker ${NEW_USER}
+
+#    systemctl enable docker
 fi
 
-systemctl enable ntp
+#systemctl enable ntpq
 
 echo "\n${YELLOW}>>>>>>>> cleaning <<<<<<<<${RESET}\n"
-apt -y autoremove
-apt -y autoclean
 df -Th
 
 echo "\n${YELLOW}>>>>>>>> settingup root password expiry information change <<<<<<<<${RESET}\n"
-usermod -aG docker ${NEW_USER}
+
 passwd -l root
 date
 
