@@ -13,6 +13,9 @@
 > todo: Подумать над настройками fail2ban
 
 ```
+Ubuntu 20.04
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_ubuntu_2004.sh)"
+
 Ubuntu 18.04
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_ubuntu_1804.sh)"
 
