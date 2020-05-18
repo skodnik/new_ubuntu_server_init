@@ -50,6 +50,15 @@ echo "\n${YELLOW}>>>>>>>> apt update, upgrade <<<<<<<<${RESET}\n"
 df -Th
 apt update && apt list --upgradable && apt upgrade -y
 
+read -r -p "Make swap 2G? (y/n): " MAKE_SWAP
+if [ $MAKE_SWAP = 'y' ]; then
+  fallocate -l 2G /swapfile
+  chmod 600 /swapfile
+  mkswap /swapfiles
+  swapon /swapfiles
+  echo -e "/swapfile swap swap defaults 0 0" >> /etc/fstab
+fi
+
 echo "\n${YELLOW}>>>>>>>> install ufw fail2ban make ntp <<<<<<<<${RESET}\n"
 apt install -y ufw fail2ban make ntp
 
