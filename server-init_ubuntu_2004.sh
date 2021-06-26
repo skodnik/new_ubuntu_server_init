@@ -52,11 +52,12 @@ apt update && apt list --upgradable && apt upgrade -y
 
 read -r -p "Make swap 2G? (y/n): " MAKE_SWAP
 if [ $MAKE_SWAP = 'y' ]; then
-  fallocate -l 2G /swapfile
+  fallocate --length 2G /swapfile
   chmod 600 /swapfile
   mkswap /swapfile
   swapon /swapfile
   echo -e "/swapfile swap swap defaults 0 0" >> /etc/fstab
+  free -h
 fi
 
 echo "\n${YELLOW}>>>>>>>> install ufw fail2ban make ntp <<<<<<<<${RESET}\n"
