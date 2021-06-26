@@ -54,8 +54,8 @@ read -r -p "Make swap 2G? (y/n): " MAKE_SWAP
 if [ $MAKE_SWAP = 'y' ]; then
   fallocate -l 2G /swapfile
   chmod 600 /swapfile
-  mkswap /swapfiles
-  swapon /swapfiles
+  mkswap /swapfile
+  swapon /swapfile
   echo -e "/swapfile swap swap defaults 0 0" >> /etc/fstab
 fi
 
