@@ -78,12 +78,10 @@ else
 fi
 
 echo "\n${YELLOW}>>>>>>>> ufw setting up <<<<<<<<${RESET}\n"
-
 read -r -p "Install ufw firewall? (y/n): " UFW_INSTALL
 if [ $UFW_INSTALL = 'y' ]; then
   echo "New port for ssh:"
   read SSH_PORT
-  #echo -e "Port ${SSH_PORT}\nPermitRootLogin no" >> /etc/ssh/sshd_config
   echo "Port ${SSH_PORT}" >>/etc/ssh/sshd_config
   echo "PermitRootLogin no" >>/etc/ssh/sshd_config
   ufw default deny incoming
@@ -96,19 +94,28 @@ if [ $UFW_INSTALL = 'y' ]; then
   ufw status verbose
 fi
 
-echo "\n${YELLOW}>>>>>>>> install docker docker-compose mc ncdu zsh <<<<<<<<${RESET}\n"
-#apt install -y docker docker-compose mc ncdu zsh
-apt install -y mc ncdu zsh
+echo "\n${YELLOW}>>>>>>>> install mc ncdu zsh htop <<<<<<<<${RESET}\n"
+apt install -y mc ncdu zsh htop
 
-#echo "Install docker and docker-compose? (y/n): "
-#read DOCKER_INSTALL
-
+echo "\n${YELLOW}>>>>>>>> docker and docker-compose setting up <<<<<<<<${RESET}\n"
 read -r -p "Install docker and docker-compose? (y/n): " DOCKER_INSTALL
 if [ $DOCKER_INSTALL = 'y' ]; then
-  apt install -y docker.io docker-compose
+  apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  apt update
+  apt install -y docker-ce docker-ce-cli containerd.io
   systemctl enable --now docker
   docker --version
   usermod -aG docker ${NEW_USER}
+fi
+
+echo "\n${YELLOW}>>>>>>>> nginx and certbot setting up <<<<<<<<${RESET}\n"
+read -r -p "Install nginx and certbot? (y/n): " NGINX_INSTALL
+if [ $NGINX_INSTALL = 'y' ]; then
+  apt install -y nginx certbot python3-certbot-nginx
 fi
 
 systemctl enable ntp
@@ -126,6 +133,8 @@ read -r -p "Set timezone Europe/Moscow? (y/n): " SET_TIMEZONE
 if [ $SET_TIMEZONE = 'y' ]; then
   timedatectl set-timezone Europe/Moscow
 fi
+
+df -Th
 
 cat <<-EOF
 
