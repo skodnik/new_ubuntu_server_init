@@ -105,7 +105,7 @@ apt install -y mc ncdu zsh
 
 read -r -p "Install docker and docker-compose? (y/n): " DOCKER_INSTALL
 if [ $DOCKER_INSTALL = 'y' ]; then
-  apt install docker.io docker-compose
+  apt install -y docker.io docker-compose
   systemctl enable --now docker
   docker --version
   usermod -aG docker ${NEW_USER}
