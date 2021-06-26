@@ -60,7 +60,7 @@ if [ $MAKE_SWAP = 'y' ]; then
 fi
 
 echo "\n${YELLOW}>>>>>>>> install ufw fail2ban make ntp <<<<<<<<${RESET}\n"
-apt install -y ufw fail2ban make ntp
+apt install -y ufw fail2ban make ntp git
 
 echo "\n${YELLOW}>>>>>>>> new sudo user setting up <<<<<<<<${RESET}\n"
 echo "New sudo user name:"
