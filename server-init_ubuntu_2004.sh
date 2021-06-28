@@ -56,7 +56,7 @@ if [ $MAKE_SWAP = 'y' ]; then
   chmod 600 /swapfile
   mkswap /swapfile
   swapon /swapfile
-  echo -e "/swapfile swap swap defaults 0 0" >> /etc/fstab
+  echo '/swapfile none swap sw 0 0' >> /etc/fstab
   free -h
 fi
 
@@ -85,6 +85,8 @@ if [ $UFW_INSTALL = 'y' ]; then
   read SSH_PORT
   echo "Port ${SSH_PORT}" >>/etc/ssh/sshd_config
   echo "PermitRootLogin no" >>/etc/ssh/sshd_config
+  echo "MaxAuthTries 3" >>/etc/ssh/sshd_config
+  echo "PermitEmptyPasswords no" >>/etc/ssh/sshd_config
   ufw default deny incoming
   ufw default allow outgoing
   ufw allow http
@@ -95,8 +97,8 @@ if [ $UFW_INSTALL = 'y' ]; then
   ufw status verbose
 fi
 
-echo "\n${YELLOW}>>>>>>>> install mc ncdu zsh htop <<<<<<<<${RESET}\n"
-apt install -y mc ncdu zsh htop
+echo "\n${YELLOW}>>>>>>>> install mc ncdu zsh htop lnav <<<<<<<<${RESET}\n"
+apt install -y mc ncdu zsh htop lnav
 
 echo "\n${YELLOW}>>>>>>>> docker and docker-compose setting up <<<<<<<<${RESET}\n"
 read -r -p "Install docker and docker-compose? (y/n): " DOCKER_INSTALL
@@ -130,8 +132,9 @@ apt -y autoremove
 apt -y autoclean
 df -Th
 
-echo "\n${YELLOW}>>>>>>>> settingup root password expiry information change <<<<<<<<${RESET}\n"
-passwd -l root
+echo "\n${YELLOW}>>>>>>>> setup root password expiry <<<<<<<<${RESET}\n"
+echo "www-data" >> /etc/cron.deny
+passwd --lock root
 date
 
 read -r -p "Set timezone Europe/Moscow? (y/n): " SET_TIMEZONE
