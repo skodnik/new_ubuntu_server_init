@@ -63,6 +63,19 @@ fi
 echo "\n${YELLOW}>>>>>>>> install ufw fail2ban make ntp <<<<<<<<${RESET}\n"
 apt install -y ufw fail2ban make ntp git
 
+read -r -p "Setup git? (y/n): " GIT_SETUP
+if [ $GIT_SETUP = 'y' ]; then
+  echo "Git user name:"
+  read GIT_USER
+  git config --global user.name "${NEW_USER}"
+  echo "Git user email:"
+  read GIT_USER_EMAIL
+  git config --global user.email ${GIT_USER_EMAIL}
+  git config --global credential.helper cache
+  git config --global credential.helper 'cache --timeout=3600'
+  git --version
+fi
+
 echo "\n${YELLOW}>>>>>>>> new sudo user setting up <<<<<<<<${RESET}\n"
 echo "New sudo user name:"
 read NEW_USER
@@ -97,8 +110,8 @@ if [ $UFW_INSTALL = 'y' ]; then
   ufw status verbose
 fi
 
-echo "\n${YELLOW}>>>>>>>> install mc ncdu zsh htop lnav <<<<<<<<${RESET}\n"
-apt install -y mc ncdu zsh htop lnav
+echo "\n${YELLOW}>>>>>>>> install mc ncdu composer zsh htop lnav <<<<<<<<${RESET}\n"
+apt install -y mc ncdu zsh htop lnav composer
 
 echo "\n${YELLOW}>>>>>>>> docker and docker-compose setting up <<<<<<<<${RESET}\n"
 read -r -p "Install docker and docker-compose? (y/n): " DOCKER_INSTALL
