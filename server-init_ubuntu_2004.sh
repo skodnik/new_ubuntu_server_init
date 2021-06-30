@@ -110,8 +110,8 @@ if [ $UFW_INSTALL = 'y' ]; then
   ufw status verbose
 fi
 
-echo "\n${YELLOW}>>>>>>>> install mc ncdu composer zsh htop lnav <<<<<<<<${RESET}\n"
-apt install -y mc ncdu zsh htop lnav composer
+echo "\n${YELLOW}>>>>>>>> install mc ncdu composer zsh htop lnav composer jq <<<<<<<<${RESET}\n"
+apt install -y mc ncdu zsh htop lnav composer jq
 
 echo "\n${YELLOW}>>>>>>>> docker and docker-compose setting up <<<<<<<<${RESET}\n"
 read -r -p "Install docker and docker-compose? (y/n): " DOCKER_INSTALL
