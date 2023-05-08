@@ -41,6 +41,12 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_
 
 ## После загрузки под новым пользователем
 
+### Корректировка hostname (если почему-то не изменился)
+
+```shell
+sudo hostname new-host-name
+```
+
 ### Настройка zsh и oh-my-zsh
 
 1. Установка и запуск oh-my-zsh.

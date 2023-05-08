@@ -107,7 +107,7 @@ apt install --yes ufw fail2ban make ntp
 # Setup git                                                #
 ############################################################
 read -r -p "Install and setup git? (y/n): " GIT_SETUP
-if [ "${GIT_SETUP}" = 'y' ]; then
+if [ "${GIT_SETUP}" = "y" ]; then
   apt install --yes git
 
   echo "Git user name:"
@@ -167,7 +167,7 @@ echo "${GREEN}User ${NEW_USER} has become sudo!${RESET}"
 # Add new system user for git                              #
 ############################################################
 read -r -p "Setup new system user for git? (y/n): " GIT_SYSTEM_USER_SETUP
-if [ "${GIT_SYSTEM_USER_SETUP}" = 'y' ]; then
+if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
   echo -e "\n${YELLOW}${DELIMITER} new git system user setting up ${DELIMITER}${RESET}\n"
   GIT_SYSTEM_USER="git"
 
@@ -186,7 +186,7 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = 'y' ]; then
   echo "${GREEN}User ${GIT_SYSTEM_USER} added and added to group ${NEW_USER}!${RESET}"
 
   # If git installed, add git shell to shells list and make it shell active for this user
-  if [ "${GIT_SETUP}" = 'y' ]; then
+  if [ "${GIT_SETUP}" = "y" ]; then
     which git-shell >> /etc/shells
     chsh "${GIT_SYSTEM_USER}" -s "$(which git-shell)"
   fi
@@ -231,7 +231,7 @@ fi
 ############################################################
 echo -e "\n${YELLOW}${DELIMITER} ufw setting up and change default ssh port ${DELIMITER}${RESET}\n"
 read -r -p "Install ufw firewall? (y/n): " UFW_INSTALL
-if [ "${UFW_INSTALL}" = 'y' ]; then
+if [ "${UFW_INSTALL}" = "y" ]; then
   echo "New port for ssh:"
   read -r SSH_PORT
 
@@ -328,6 +328,20 @@ date
 read -r -p "Set timezone Europe/Moscow? (y/n): " SET_TIMEZONE
 if [ "${SET_TIMEZONE}" = "y" ]; then
   timedatectl set-timezone Europe/Moscow
+fi
+
+
+############################################################
+# Disable welcome banners                                  #
+############################################################
+read -r -p "Disable welcome banners (y/n): " DISABLE_WELCOME_BANNERS
+if [ "${DISABLE_WELCOME_BANNERS}" = "y" ]; then
+  chmod -x /etc/update-motd.d/*
+
+  read -r -p "Enable sysinfo banner (y/n): " ENABLE_SYSINFO_BANNER
+  if [ "${ENABLE_SYSINFO_BANNER}" = "y" ]; then
+    chmod +x /etc/update-motd.d/50-landscape-sysinfo
+  fi
 fi
 
 df --print-type --human-readable
