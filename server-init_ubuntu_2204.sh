@@ -197,7 +197,7 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = 'y' ]; then
     read -r GIT_USER_PUBLIC_KEY
 
     echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ${GIT_USER_PUBLIC_KEY}" >> /home/"${GIT_SYSTEM_USER}"/.ssh/authorized_keys
-    chown -R "${GIT_SYSTEM_USER}":"${GIT_SYSTEM_USER}" /home/"${NEW_USER}"/.ssh
+    chown -R "${GIT_SYSTEM_USER}":"${GIT_SYSTEM_USER}" /home/"${GIT_SYSTEM_USER}"/.ssh
 
     echo "${GREEN}Key added to /home/${GIT_SYSTEM_USER}/.ssh/authorized_keys!${RESET}"
   fi
