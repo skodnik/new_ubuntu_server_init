@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+umask 022
+
 git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
@@ -8,4 +10,3 @@ wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/con
 cp zshrc_example ~/.zshrc
 rm zshrc_example
 source ~/.zshrc
-chsh -s /bin/zsh
