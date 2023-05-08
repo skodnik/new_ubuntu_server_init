@@ -58,6 +58,18 @@ apt update && apt list --upgradable && apt upgrade --yes
 
 
 ############################################################
+# Setup hostname                                           #
+############################################################
+read -r -p "Setup hostname? (y/n): " SETUP_HOSTNAME
+if [ "${SETUP_HOSTNAME}" = "y" ]; then
+  hostname
+  echo "New hostname (only '-' allowed, example: new-host-name):"
+  read -r NEW_HOST_NAME
+  hostname "${NEW_HOST_NAME}"
+fi
+
+
+############################################################
 # Create swap file                                         #
 ############################################################
 read -r -p "Make swap? (y/n): " MAKE_SWAP
@@ -320,36 +332,38 @@ fi
 
 df --print-type --human-readable
 
+HOSTNAME=$(hostname)
+
 cat <<-EOF
 
-    ${GREEN}All done. I hope so...${RESET}
+${GREEN}All done. I hope so...${RESET}
 
-    You'll need to reboot server and connect as a new user ${NEW_USER}.
+You'll need to reboot server and connect as a new user ${NEW_USER}.
 
-    cli:
-    ${BLUE}ssh ${NEW_USER}@${MY_IP} -p ${SSH_PORT}${RESET}
+cli:
+${BLUE}ssh ${NEW_USER}@${MY_IP} -p ${SSH_PORT}${RESET}
 
-    ~/.ssh/config example:
-    Host your_host_name
-        HostName ${MY_IP}
-        User ${NEW_USER}
-        Port ${SSH_PORT}
-        IdentityFile path_to_private_key
+~/.ssh/config example:
+Host ${HOSTNAME}_${NEW_USER}
+    HostName ${MY_IP}
+    User ${NEW_USER}
+    Port ${SSH_PORT}
+    IdentityFile ~/.ssh/...
 
 EOF
 
 if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
 cat <<-EOF
 
-    ${GREEN}Remember! You have ${GIT_SYSTEM_USER} user!${RESET}
-    https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server
+${GREEN}Remember! You have ${GIT_SYSTEM_USER} user!${RESET}
+https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server
 
-    ~/.ssh/config example:
-    Host your_host_name_GIT
-        HostName ${MY_IP}
-        User ${GIT_SYSTEM_USER}
-        Port ${SSH_PORT}
-        IdentityFile path_to_private_key
+~/.ssh/config example:
+Host ${HOSTNAME}_${GIT_SYSTEM_USER}
+    HostName ${MY_IP}
+    User ${GIT_SYSTEM_USER}
+    Port ${SSH_PORT}
+    IdentityFile ~/.ssh/...
 
 EOF
 fi
