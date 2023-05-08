@@ -7,9 +7,83 @@ ZSH_THEME="bureau"
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting zsh-z k)
 source $ZSH/oh-my-zsh.sh
 
+
+##################################################
+# Base                                           #
+##################################################
+alias aa="alias"
 alias e="exit"
 alias m="make"
 alias ll="k -ha --group-directories-first"
 alias h="history | tac | less"
 alias fs="df --human-readable --print-type"
 alias cat="batcat"
+alias smc="sudo mc"
+
+
+##################################################
+# Crontab                                        #
+##################################################
+alias cl="crontab -l"
+alias ce="crontab -e"
+
+# Backup crontab rules
+alias bct="crontab -l > ~/backups/crontab/crontab_$(date +'%F_%H-%M-%S').txt"
+
+
+##################################################
+# NGINX                                          #
+##################################################
+# NGINX daemon status
+alias ns="systemctl status nginx"
+
+# List available and enabled configs
+alias nae="ll /etc/nginx/sites-available && ll /etc/nginx/sites-enabled"
+
+# Create symbolic link to file "ln -s [source_file] [symbolic_link]"
+alias sls="sudo ln --symbolic "
+
+# Do not run, just test the configuration file
+alias nc="sudo nginx -t"
+
+# Reload NGINX
+alias nr="sudo nginx -s reload"
+
+# Backup NGINX configs
+alias bnc="cd /etc/nginx && tar -czvf ~/backups/nginx/configs/nginx_$(date +'%F_%H-%M-%S').tar.gz nginx.conf sites-available/ sites-enabled/ && cd -"
+
+
+##################################################
+# Certbot                                        #
+##################################################
+# Display information about certificates you have from Certbot
+alias scc="sudo certbot certificates"
+
+# Use the Nginx plugin for authentication & installation
+alias scn="sudo certbot --nginx"
+
+# Test "renew" or "certonly" without saving any certificates
+alias scrd="sudo certbot renew --dry-run"
+
+# Renew all previously obtained certificates that are near
+alias scr="sudo certbot renew"
+
+
+##################################################
+# Docker                                         #
+##################################################
+# Get container statistics
+alias dcs="docker container stats"
+
+# Get running containers info
+alias dps="docker ps"
+
+# Show docker disk usage
+alias dsd="docker system df --verbose"
+
+
+##################################################
+# User custom aliases                            #
+##################################################
+
+# alias =""

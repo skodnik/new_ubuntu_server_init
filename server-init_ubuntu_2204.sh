@@ -99,8 +99,8 @@ fi
 ############################################################
 # Install system base apps                                 #
 ############################################################
-echo -e "\n${YELLOW}${DELIMITER} install ufw fail2ban make ntp ${DELIMITER}${RESET}\n"
-apt install --yes ufw fail2ban make ntp
+echo -e "\n${YELLOW}${DELIMITER} install ufw fail2ban make ntp restic ${DELIMITER}${RESET}\n"
+apt install --yes ufw fail2ban make ntp restic bat
 
 
 ############################################################
@@ -121,6 +121,7 @@ if [ "${GIT_SETUP}" = "y" ]; then
   git config --global user.email "${GIT_USER_EMAIL}"
   git config --global credential.helper cache
   git config --global credential.helper 'cache --timeout=3600'
+  git config --global core.fileMode false
 
   git --version
 fi
