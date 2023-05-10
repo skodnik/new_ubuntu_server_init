@@ -169,8 +169,8 @@ echo "${GREEN}User ${NEW_USER} has become sudo!${RESET}"
 ############################################################
 read -r -p "Setup new system user for git? (y/n): " GIT_SYSTEM_USER_SETUP
 if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
-  echo -e "\n${YELLOW}${DELIMITER} new git system user setting up ${DELIMITER}${RESET}\n"
-  GIT_SYSTEM_USER="git"
+  echo "System git user name (example: vcs):"
+  read -r GIT_SYSTEM_USER
 
   # Create system git user
   if ! adduser --debug "${GIT_SYSTEM_USER}"; then
