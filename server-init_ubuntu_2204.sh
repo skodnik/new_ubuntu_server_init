@@ -48,11 +48,24 @@ DELIMITER="----------"
 
 setup_color
 
+section_message () {
+  echo -e "\n${YELLOW}${DELIMITER} $1 ${DELIMITER}${RESET}\n"
+}
+
+error_message_and_exit () {
+    echo "${RED}$1${RESET}"
+    exit 1
+}
+
+success_message () {
+  echo "${GREEN}$1${RESET}"
+}
+
 
 ############################################################
 # System apt update, upgrade                               #
 ############################################################
-echo -e "\n${YELLOW}${DELIMITER} apt update, upgrade ${DELIMITER}${RESET}\n"
+section_message "apt update, upgrade"
 df --print-type --human-readable
 apt update && apt list --upgradable && apt upgrade --yes
 
@@ -60,6 +73,7 @@ apt update && apt list --upgradable && apt upgrade --yes
 ############################################################
 # Setup hostname                                           #
 ############################################################
+section_message "hostname"
 read -r -p "Setup hostname? (y/n): " SETUP_HOSTNAME
 if [ "${SETUP_HOSTNAME}" = "y" ]; then
   hostname
@@ -72,6 +86,7 @@ fi
 ############################################################
 # Create swap file                                         #
 ############################################################
+section_message "swap"
 read -r -p "Make swap? (y/n): " MAKE_SWAP
 if [ "${MAKE_SWAP}" = "y" ]; then
   echo "Swap size (example: 2G):"
@@ -88,24 +103,26 @@ fi
 ############################################################
 # Setup umask 022 -> 002                                   #
 ############################################################
+section_message "umask"
 read -r -p "Add umask 002? (y/n): " UMASK_002
 if [ "${UMASK_002}" = "y" ]; then
   echo "umask 002" >> /etc/profile
   source /etc/profile
-  echo "${GREEN}umask 002 added to /etc/profile!${RESET}"
+  success_message "umask 002 added to /etc/profile!"
 fi
 
 
 ############################################################
 # Install system base apps                                 #
 ############################################################
-echo -e "\n${YELLOW}${DELIMITER} install ufw fail2ban make ntp restic ${DELIMITER}${RESET}\n"
+section_message "install ufw fail2ban make ntp restic"
 apt install --yes ufw fail2ban make ntp restic bat
 
 
 ############################################################
 # Setup git                                                #
 ############################################################
+section_message "setup git"
 read -r -p "Install and setup git? (y/n): " GIT_SETUP
 if [ "${GIT_SETUP}" = "y" ]; then
   apt install --yes git
@@ -130,20 +147,18 @@ fi
 ############################################################
 # Add new user with sudo privilege                         #
 ############################################################
-echo -e "\n${YELLOW}${DELIMITER} new sudo user setting up ${DELIMITER}${RESET}\n"
+section_message "new sudo user setting up"
 echo "New sudo user name:"
 read -r NEW_USER
 
 # Create user
 if ! adduser --debug "${NEW_USER}"; then
-  echo "${RED}Something wrong with making sudo user!${RESET}"
-  exit 1
+  error_message_and_exit "Something wrong with making sudo user!"
 fi
 
 # Add user to sudo group
 if ! usermod --append --groups sudo "${NEW_USER}"; then
-  echo "${RED}Something wrong with adding ${NEW_USER} in sudo group!${RESET}"
-  exit 1
+  error_message_and_exit "Something wrong with adding ${NEW_USER} in sudo group!"
 fi
 
 # Adding public key for new user
@@ -158,15 +173,16 @@ if [ "${NEW_USER_PUBLIC_KEY_ANSWER}" = "y" ]; then
   echo "${NEW_USER_PUBLIC_KEY}" >> /home/"${NEW_USER}"/.ssh/authorized_keys
   chown -R "${NEW_USER}":"${NEW_USER}" /home/"${NEW_USER}"/.ssh
 
-  echo "${GREEN}Key added to /home/${NEW_USER}/.ssh/authorized_keys!${RESET}"
+  success_message "Key added to /home/${NEW_USER}/.ssh/authorized_keys!"
 fi
 
-echo "${GREEN}User ${NEW_USER} has become sudo!${RESET}"
+success_message "User ${NEW_USER} has become sudo!"
 
 
 ############################################################
 # Add new system user for git                              #
 ############################################################
+section_message "system user for vcs"
 read -r -p "Setup new system user for git? (y/n): " GIT_SYSTEM_USER_SETUP
 if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
   echo "System git user name (example: vcs):"
@@ -174,17 +190,15 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
 
   # Create system git user
   if ! adduser --debug "${GIT_SYSTEM_USER}"; then
-    echo "${RED}Something wrong with making system ${GIT_SYSTEM_USER} user!${RESET}"
-    exit 1
+    error_message_and_exit "Something wrong with making system ${GIT_SYSTEM_USER} user!"
   fi
 
   # Add system git user to new user group
   if ! usermod --append --groups "${NEW_USER}" "${GIT_SYSTEM_USER}"; then
-    echo "${RED}Something wrong with adding ${GIT_SYSTEM_USER} in ${NEW_USER} group!${RESET}"
-    exit 1
+    error_message_and_exit "Something wrong with adding ${GIT_SYSTEM_USER} in ${NEW_USER} group!"
   fi
 
-  echo "${GREEN}User ${GIT_SYSTEM_USER} added and added to group ${NEW_USER}!${RESET}"
+  success_message "User ${GIT_SYSTEM_USER} added and added to group ${NEW_USER}!"
 
   # If git installed, add git shell to shells list and make it shell active for this user
   if [ "${GIT_SETUP}" = "y" ]; then
@@ -194,11 +208,10 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
 
   # Add new user to system git user group
   if ! usermod --append --groups "${GIT_SYSTEM_USER}" "${NEW_USER}"; then
-    echo "${RED}Something wrong with adding ${NEW_USER} in ${GIT_SYSTEM_USER} group!${RESET}"
-    exit 1
+    error_message_and_exit "Something wrong with adding ${NEW_USER} in ${GIT_SYSTEM_USER} group!"
   fi
 
-  echo "${GREEN}User ${NEW_USER} added and added to group ${GIT_SYSTEM_USER}!${RESET}"
+  success_message "User ${NEW_USER} added and added to group ${GIT_SYSTEM_USER}!"
 
   # Adding public key for system git user
   read -r -p "Add ${GIT_SYSTEM_USER} public key? (y/n): " GIT_USER_PUBLIC_KEY_ANSWER
@@ -212,17 +225,16 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
     echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ${GIT_USER_PUBLIC_KEY}" >> /home/"${GIT_SYSTEM_USER}"/.ssh/authorized_keys
     chown -R "${GIT_SYSTEM_USER}":"${GIT_SYSTEM_USER}" /home/"${GIT_SYSTEM_USER}"/.ssh
 
-    echo "${GREEN}Key added to /home/${GIT_SYSTEM_USER}/.ssh/authorized_keys!${RESET}"
+    success_message "Key added to /home/${GIT_SYSTEM_USER}/.ssh/authorized_keys!"
   fi
 
   # Create dir for git --bare repos
   mkdir /srv/"${GIT_SYSTEM_USER}"
-  echo "${GREEN}Created dir /srv/${GIT_SYSTEM_USER}${RESET}"
+  success_message "Created dir /srv/${GIT_SYSTEM_USER}"
 
   # Make the git user the owner of the new directory
   if ! chown -R "${GIT_SYSTEM_USER}":"${GIT_SYSTEM_USER}" /srv/"${GIT_SYSTEM_USER}"; then
-    echo "${RED}Something wrong with making ${GIT_SYSTEM_USER} the owner of the /srv/${GIT_SYSTEM_USER}!${RESET}"
-    exit 1
+    error_message_and_exit "Something wrong with making ${GIT_SYSTEM_USER} the owner of the /srv/${GIT_SYSTEM_USER}!"
   fi
 fi
 
@@ -230,7 +242,7 @@ fi
 ############################################################
 # Install ufw and setting up and change default ssh port   #
 ############################################################
-echo -e "\n${YELLOW}${DELIMITER} ufw setting up and change default ssh port ${DELIMITER}${RESET}\n"
+section_message "ufw setting up and change default ssh port"
 read -r -p "Install ufw firewall? (y/n): " UFW_INSTALL
 if [ "${UFW_INSTALL}" = "y" ]; then
   echo "New port for ssh:"
@@ -257,14 +269,14 @@ fi
 ############################################################
 # Install mc ncdu composer zsh htop lnav composer jq       #
 ############################################################
-echo -e "\n${YELLOW}${DELIMITER} install mc ncdu composer zsh htop lnav composer jq ${DELIMITER}${RESET}\n"
+section_message "install mc ncdu composer zsh htop lnav composer jq"
 apt install -y mc ncdu zsh htop lnav composer jq
 
 
 ############################################################
 # Install docker and docker-compose setting up             #
 ############################################################
-echo -e "\n${YELLOW}${DELIMITER} docker and docker-compose setting up ${DELIMITER}${RESET}\n"
+section_message "docker and docker-compose setting up"
 read -r -p "Install docker and docker-compose? (y/n): " DOCKER_INSTALL
 if [ "${DOCKER_INSTALL}" = "y" ]; then
   apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
@@ -287,7 +299,7 @@ fi
 ############################################################
 # Install nginx and certbot setting up                     #
 ############################################################
-echo -e "\n${YELLOW}${DELIMITER} nginx and certbot setting up ${DELIMITER}${RESET}\n"
+section_message "nginx and certbot setting up"
 read -r -p "Install nginx and certbot? (y/n): " NGINX_INSTALL
 if [ "${NGINX_INSTALL}" = "y" ]; then
   apt install --yes nginx certbot python3-certbot-nginx
@@ -297,13 +309,14 @@ fi
 ############################################################
 # Enable ntp                                               #
 ############################################################
+section_message "ntp"
 systemctl enable ntp
 
 
 ############################################################
 # Cleaning up                                              #
 ############################################################
-echo -e "\n${YELLOW}${DELIMITER} cleaning ${DELIMITER}${RESET}\n"
+section_message "cleaning"
 apt --yes autoremove
 apt --yes autoclean
 df --print-type --human-readable
@@ -312,29 +325,33 @@ df --print-type --human-readable
 ############################################################
 # Setup root password expiry                               #
 ############################################################
-echo -e "\n${YELLOW}${DELIMITER} setup root password expiry ${DELIMITER}${RESET}\n"
+section_message "setup root password expiry"
 passwd --lock root
 
 
 ############################################################
 # Deny cron for www-data user                              #
 ############################################################
+section_message "deny cron for www-data user"
 echo "www-data" >>/etc/cron.deny
 
 
 ############################################################
 # Set timezone Europe/Moscow                               #
 ############################################################
+section_message "timezone Europe/Moscow"
 date
 read -r -p "Set timezone Europe/Moscow? (y/n): " SET_TIMEZONE
 if [ "${SET_TIMEZONE}" = "y" ]; then
   timedatectl set-timezone Europe/Moscow
+  date
 fi
 
 
 ############################################################
 # Disable welcome banners                                  #
 ############################################################
+section_message "disable welcome banners"
 read -r -p "Disable welcome banners (y/n): " DISABLE_WELCOME_BANNERS
 if [ "${DISABLE_WELCOME_BANNERS}" = "y" ]; then
   chmod -x /etc/update-motd.d/*
@@ -345,6 +362,11 @@ if [ "${DISABLE_WELCOME_BANNERS}" = "y" ]; then
   fi
 fi
 
+
+############################################################
+# Report                                                   #
+############################################################
+section_message "report"
 df --print-type --human-readable
 
 HOSTNAME=$(hostname)
