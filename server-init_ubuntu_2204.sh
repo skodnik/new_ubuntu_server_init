@@ -108,7 +108,7 @@ read -r -p "Add umask 002? (y/n): " UMASK_002
 if [ "${UMASK_002}" = "y" ]; then
   echo "umask 002" >> /etc/profile
   source /etc/profile
-  success_message "umask 002 added to /etc/profile!"
+  success_message "umask 002 added to /etc/profile"
 fi
 
 
@@ -303,6 +303,11 @@ section_message "nginx and certbot setting up"
 read -r -p "Install nginx and certbot? (y/n): " NGINX_INSTALL
 if [ "${NGINX_INSTALL}" = "y" ]; then
   apt install --yes nginx certbot python3-certbot-nginx
+
+    # Add new user to www-data group
+    if ! usermod --append --groups www-data "${NEW_USER}"; then
+      error_message_and_exit "Something wrong with adding ${NEW_USER} in ${GIT_SYSTEM_USER} group!"
+    fi
 fi
 
 

@@ -17,7 +17,7 @@ alias m="make"
 alias ll="k -ha --group-directories-first"
 alias h="history | tac | less"
 alias fs="df --human-readable --print-type"
-alias cat="batcat"
+alias cat="bat --plain"
 alias smc="sudo mc"
 
 
