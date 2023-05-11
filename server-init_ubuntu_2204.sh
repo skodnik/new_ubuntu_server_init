@@ -252,19 +252,19 @@ if [ "${UFW_INSTALL}" = "y" ]; then
   success_message "Created ssh config backup /etc/ssh/sshd_config.bak"
 
   # Disable root login
-  sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+  sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 
   # Setup max auth tries
-  sed -i 's/#MaxAuthTries 6/MaxAuthTries 3/' /etc/ssh/sshd_config
+  sed -i 's/#MaxAuthTries 6/MaxAuthTries 3/g' /etc/ssh/sshd_config
 
   # Disable empty passwords
-  sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+  sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/g' /etc/ssh/sshd_config
 
   # Change ssh port
-  sed -i "s/#Port 22/Port ${SSH_PORT}/" /etc/ssh/sshd_config
+  sed -i "s/#Port 22/Port ${SSH_PORT}/g" /etc/ssh/sshd_config
 
   # Disable X11Forwarding
-  sed -i "s/X11Forwarding yes/X11Forwarding no/" /etc/ssh/sshd_config
+  sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
 
   # Users who allow to connect
   {
@@ -273,7 +273,7 @@ if [ "${UFW_INSTALL}" = "y" ]; then
 
   read -r -p "Disable password auth for ssh (y/n): " DISABLE_PASSWORD_FOR_SSH
   if [ "${DISABLE_PASSWORD_FOR_SSH}" = "y" ]; then
-    sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+    sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
   fi
 
   ufw default deny incoming
