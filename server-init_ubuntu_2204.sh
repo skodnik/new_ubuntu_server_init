@@ -243,17 +243,38 @@ fi
 # Install ufw and setting up and change default ssh port   #
 ############################################################
 section_message "ufw setting up and change default ssh port"
-read -r -p "Install ufw firewall? (y/n): " UFW_INSTALL
+read -r -p "Install ufw firewall and setup ssh config? (y/n): " UFW_INSTALL
 if [ "${UFW_INSTALL}" = "y" ]; then
   echo "New port for ssh:"
   read -r SSH_PORT
 
+  cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+  success_message "Created ssh config backup /etc/ssh/sshd_config.bak"
+
+  # Disable root login
+  sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+
+  # Setup max auth tries
+  sed -i 's/#MaxAuthTries 6/MaxAuthTries 3/' /etc/ssh/sshd_config
+
+  # Disable empty passwords
+  sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+
+  # Change ssh port
+  sed -i "s/#Port 22/Port ${SSH_PORT}/" /etc/ssh/sshd_config
+
+  # Disable X11Forwarding
+  sed -i "s/X11Forwarding yes/X11Forwarding no/" /etc/ssh/sshd_config
+
+  # Users who allow to connect
   {
-    echo "Port ${SSH_PORT}"
-    echo "PermitRootLogin no"
-    echo "MaxAuthTries 3"
-    echo "PermitEmptyPasswords no"
+    echo "AllowUsers ${NEW_USER} ${GIT_SYSTEM_USER}"
   } >>/etc/ssh/sshd_config
+
+  read -r -p "Disable password auth for ssh (y/n): " DISABLE_PASSWORD_FOR_SSH
+  if [ "${DISABLE_PASSWORD_FOR_SSH}" = "y" ]; then
+    sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+  fi
 
   ufw default deny incoming
   ufw default allow outgoing
@@ -375,6 +396,14 @@ section_message "report"
 df --print-type --human-readable
 
 HOSTNAME=$(hostname)
+
+success_message "Actual ssh config:"
+grep "PermitRootLogin" /etc/ssh/sshd_config
+grep "MaxAuthTries" /etc/ssh/sshd_config
+grep "PermitEmptyPasswords" /etc/ssh/sshd_config
+grep "Port" /etc/ssh/sshd_config
+grep "AllowUsers" /etc/ssh/sshd_config
+grep "PasswordAuthentication" /etc/ssh/sshd_config
 
 cat <<-EOF
 
