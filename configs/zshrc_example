@@ -18,7 +18,9 @@ alias ll="k -ha --group-directories-first"
 alias h="history | tac | less"
 alias fs="df --human-readable --print-type"
 alias bat="batcat --plain"
+alias b="batcat --plain"
 alias cat="batcat --plain"
+alias c="batcat --plain"
 alias smc="sudo mc"
 
 
