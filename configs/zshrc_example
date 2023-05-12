@@ -30,8 +30,6 @@ alias ce="crontab -e"
 # Backup crontab rules
 alias bct="crontab -l > ~/backups/crontab/crontab_$(date +'%F_%H-%M-%S').txt"
 
-# test
-
 ##################################################
 # NGINX                                          #
 ##################################################
