@@ -21,6 +21,7 @@ alias bat="batcat --plain"
 alias cat="batcat --plain"
 alias smc="sudo mc"
 
+# test
 
 ##################################################
 # Crontab                                        #
