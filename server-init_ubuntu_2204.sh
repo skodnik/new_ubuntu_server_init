@@ -48,19 +48,18 @@ DELIMITER="----------"
 
 setup_color
 
-section_message () {
+section_message() {
   echo -e "\n${YELLOW}${DELIMITER} $1 ${DELIMITER}${RESET}\n"
 }
 
-error_message_and_exit () {
-    echo "${RED}$1${RESET}"
-    exit 1
+error_message_and_exit() {
+  echo "${RED}$1${RESET}"
+  exit 1
 }
 
-success_message () {
+success_message() {
   echo "${GREEN}$1${RESET}"
 }
-
 
 ############################################################
 # System apt update, upgrade                               #
@@ -68,7 +67,6 @@ success_message () {
 section_message "apt update, upgrade"
 df --print-type --human-readable
 apt update && apt list --upgradable && apt upgrade --yes
-
 
 ############################################################
 # Setup hostname                                           #
@@ -81,7 +79,6 @@ if [ "${SETUP_HOSTNAME}" = "y" ]; then
   read -r NEW_HOST_NAME
   hostname "${NEW_HOST_NAME}"
 fi
-
 
 ############################################################
 # Create swap file                                         #
@@ -99,25 +96,22 @@ if [ "${MAKE_SWAP}" = "y" ]; then
   free --human
 fi
 
-
 ############################################################
 # Setup umask 022 -> 002                                   #
 ############################################################
 section_message "umask"
 read -r -p "Add umask 002? (y/n): " UMASK_002
 if [ "${UMASK_002}" = "y" ]; then
-  echo "umask 002" >> /etc/profile
+  echo "umask 002" >>/etc/profile
   source /etc/profile
   success_message "umask 002 added to /etc/profile"
 fi
-
 
 ############################################################
 # Install system base apps                                 #
 ############################################################
 section_message "install ufw fail2ban make ntp restic"
 apt install --yes ufw fail2ban make ntp restic bat
-
 
 ############################################################
 # Setup git                                                #
@@ -142,7 +136,6 @@ if [ "${GIT_SETUP}" = "y" ]; then
 
   git --version
 fi
-
 
 ############################################################
 # Add new user with sudo privilege                         #
@@ -170,14 +163,13 @@ if [ "${NEW_USER_PUBLIC_KEY_ANSWER}" = "y" ]; then
   echo "Public key:"
   read -r NEW_USER_PUBLIC_KEY
 
-  echo "${NEW_USER_PUBLIC_KEY}" >> /home/"${NEW_USER}"/.ssh/authorized_keys
+  echo "${NEW_USER_PUBLIC_KEY}" >>/home/"${NEW_USER}"/.ssh/authorized_keys
   chown -R "${NEW_USER}":"${NEW_USER}" /home/"${NEW_USER}"/.ssh
 
   success_message "Key added to /home/${NEW_USER}/.ssh/authorized_keys!"
 fi
 
 success_message "User ${NEW_USER} has become sudo!"
-
 
 ############################################################
 # Add new system user for git                              #
@@ -202,7 +194,7 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
 
   # If git installed, add git shell to shells list and make it shell active for this user
   if [ "${GIT_SETUP}" = "y" ]; then
-    which git-shell >> /etc/shells
+    which git-shell >>/etc/shells
     chsh "${GIT_SYSTEM_USER}" -s "$(which git-shell)"
   fi
 
@@ -222,7 +214,7 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
     echo "Public key:"
     read -r GIT_USER_PUBLIC_KEY
 
-    echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ${GIT_USER_PUBLIC_KEY}" >> /home/"${GIT_SYSTEM_USER}"/.ssh/authorized_keys
+    echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ${GIT_USER_PUBLIC_KEY}" >>/home/"${GIT_SYSTEM_USER}"/.ssh/authorized_keys
     chown -R "${GIT_SYSTEM_USER}":"${GIT_SYSTEM_USER}" /home/"${GIT_SYSTEM_USER}"/.ssh
 
     success_message "Key added to /home/${GIT_SYSTEM_USER}/.ssh/authorized_keys!"
@@ -230,6 +222,10 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
 
   # Create dir for git --bare repos
   mkdir /srv/"${GIT_SYSTEM_USER}"
+
+  mkdir /home/"${GIT_SYSTEM_USER}"/apps
+  mkdir /home/"${GIT_SYSTEM_USER}"/repos
+
   success_message "Created dir /srv/${GIT_SYSTEM_USER}"
 
   # Make the git user the owner of the new directory
@@ -237,7 +233,6 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
     error_message_and_exit "Something wrong with making ${GIT_SYSTEM_USER} the owner of the /srv/${GIT_SYSTEM_USER}!"
   fi
 fi
-
 
 ############################################################
 # Install ufw and setting up and change default ssh port   #
@@ -286,13 +281,11 @@ if [ "${UFW_INSTALL}" = "y" ]; then
   ufw status verbose
 fi
 
-
 ############################################################
 # Install mc ncdu composer zsh htop lnav composer jq       #
 ############################################################
 section_message "install mc ncdu composer zsh htop lnav composer jq"
 apt install -y mc ncdu zsh htop lnav composer jq
-
 
 ############################################################
 # Install docker and docker-compose setting up             #
@@ -316,7 +309,6 @@ if [ "${DOCKER_INSTALL}" = "y" ]; then
   docker-compose --version
 fi
 
-
 ############################################################
 # Install nginx and certbot setting up                     #
 ############################################################
@@ -325,19 +317,34 @@ read -r -p "Install nginx and certbot? (y/n): " NGINX_INSTALL
 if [ "${NGINX_INSTALL}" = "y" ]; then
   apt install --yes nginx certbot python3-certbot-nginx
 
-    # Add new user to www-data group
-    if ! usermod --append --groups www-data "${NEW_USER}"; then
-      error_message_and_exit "Something wrong with adding ${NEW_USER} in ${GIT_SYSTEM_USER} group!"
-    fi
-fi
+  # Add new user to www-data group
+  if ! usermod --append --groups www-data "${NEW_USER}"; then
+    error_message_and_exit "Something wrong with adding ${NEW_USER} in www-data group!"
+  fi
 
+  # Add www-data to new user group
+  if ! usermod --append --groups "${NEW_USER}" www-data; then
+    error_message_and_exit "Something wrong with adding www-data in ${NEW_USER} group!"
+  fi
+
+  if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
+    # Add git system user to www-data group
+    if ! usermod --append --groups www-data "${GIT_SYSTEM_USER}"; then
+      error_message_and_exit "Something wrong with adding ${GIT_SYSTEM_USER} in www-data group!"
+    fi
+
+    # Add www-data to git system user group
+    if ! usermod --append --groups "${GIT_SYSTEM_USER}" www-data; then
+      error_message_and_exit "Something wrong with adding www-data in ${GIT_SYSTEM_USER} group!"
+    fi
+  fi
+fi
 
 ############################################################
 # Enable ntp                                               #
 ############################################################
 section_message "ntp"
 systemctl enable ntp
-
 
 ############################################################
 # Cleaning up                                              #
@@ -347,20 +354,17 @@ apt --yes autoremove
 apt --yes autoclean
 df --print-type --human-readable
 
-
 ############################################################
 # Setup root password expiry                               #
 ############################################################
 section_message "setup root password expiry"
 passwd --lock root
 
-
 ############################################################
 # Deny cron for www-data user                              #
 ############################################################
 section_message "deny cron for www-data user"
 echo "www-data" >>/etc/cron.deny
-
 
 ############################################################
 # Set timezone Europe/Moscow                               #
@@ -372,7 +376,6 @@ if [ "${SET_TIMEZONE}" = "y" ]; then
   timedatectl set-timezone Europe/Moscow
   date
 fi
-
 
 ############################################################
 # Disable welcome banners                                  #
@@ -387,7 +390,6 @@ if [ "${DISABLE_WELCOME_BANNERS}" = "y" ]; then
     chmod +x /etc/update-motd.d/50-landscape-sysinfo
   fi
 fi
-
 
 ############################################################
 # Report                                                   #
@@ -424,7 +426,7 @@ Host ${HOSTNAME}_${NEW_USER}
 EOF
 
 if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
-cat <<-EOF
+  cat <<-EOF
 
 ${GREEN}Remember! You have ${GIT_SYSTEM_USER} user!${RESET}
 https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server
@@ -438,7 +440,6 @@ Host ${HOSTNAME}_${GIT_SYSTEM_USER}
 
 EOF
 fi
-
 
 ############################################################
 # Reboot                                                   #
