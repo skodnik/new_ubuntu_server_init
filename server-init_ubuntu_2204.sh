@@ -6,10 +6,18 @@
 #   sh -c "$(wget -qO- https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_ubuntu_2204.sh)"
 #
 # As an alternative, you can first download the install script and run it afterwards:
-#   wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_ubuntu_2004.sh
+#   wget https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_ubuntu_2204.sh
 #   sh install.sh
 
+REPORT_FILE="report.txt"
+
 uname -a
+
+{ echo date
+  echo ""
+  uname -a
+  echo ""
+} >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 
 read -r -p "Init server now? (y/n): " INIT
 case "${INIT}" in
@@ -45,7 +53,6 @@ setup_color() {
 }
 
 DELIMITER="----------"
-REPORT_FILE="report.txt"
 
 setup_color
 
@@ -108,6 +115,11 @@ if [ "${UMASK_002}" = "y" ]; then
   success_message "umask 002 added to /etc/profile"
 fi
 
+{ echo ""
+  echo "umask: $(umask)"
+  echo ""
+} >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+
 ############################################################
 # Install system base apps                                 #
 ############################################################
@@ -136,6 +148,12 @@ if [ "${GIT_SETUP}" = "y" ]; then
   git config --global core.fileMode false
 
   git --version
+
+  { echo ""
+    git --version
+    git config --global --list
+    echo ""
+  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 fi
 
 ############################################################
@@ -172,18 +190,6 @@ fi
 
 mkdir /home/"${NEW_USER}"/scripts
 mkdir /home/"${NEW_USER}"/backups
-
-{ echo date
-  echo ""
-  echo "ssh ${NEW_USER}@${MY_IP} -p ${SSH_PORT}"
-  echo ""
-  echo "~/.ssh/config example:"
-  echo "Host ${HOSTNAME}_${NEW_USER}"
-  echo "    HostName ${MY_IP}"
-  echo "    User ${NEW_USER}"
-  echo "    Port ${SSH_PORT}"
-  echo "    IdentityFile ~/.ssh/your_main_key"
-} >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 
 success_message "User ${NEW_USER} has become sudo!"
 
@@ -243,13 +249,7 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
   mkdir /home/"${GIT_SYSTEM_USER}"/repos
   mkdir /home/"${GIT_SYSTEM_USER}"/backups
 
-  { echo ""
-    echo "Host ${HOSTNAME}_${GIT_SYSTEM_USER}"
-    echo "    HostName ${MY_IP}"
-    echo "    User ${GIT_SYSTEM_USER}"
-    echo "    Port ${SSH_PORT}"
-    echo "    IdentityFile ~/.ssh/your_main_key"
-  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+  chown -R "${GIT_SYSTEM_USER}":"${GIT_SYSTEM_USER}" /home/"${GIT_SYSTEM_USER}"
 
   success_message "Created dir /srv/${GIT_SYSTEM_USER}"
 
@@ -306,6 +306,11 @@ if [ "${UFW_INSTALL}" = "y" ]; then
   ufw deny 22
   ufw enable
   ufw status verbose
+
+  { echo ""
+    ufw status verbose
+    echo ""
+  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 fi
 
 ############################################################
@@ -334,6 +339,12 @@ if [ "${DOCKER_INSTALL}" = "y" ]; then
   chmod +x /usr/local/bin/docker-compose
   ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
   docker-compose --version
+
+  { echo ""
+    docker --version
+    docker-compose --version
+    echo ""
+  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 fi
 
 ############################################################
@@ -365,6 +376,12 @@ if [ "${NGINX_INSTALL}" = "y" ]; then
       error_message_and_exit "Something wrong with adding www-data in ${GIT_SYSTEM_USER} group!"
     fi
   fi
+
+  { echo ""
+    nginx -v
+    certbot --version
+    echo ""
+  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 fi
 
 ############################################################
@@ -446,6 +463,18 @@ grep "PasswordAuthentication" "${SSHD_CONFIG}"
   grep "Port" "${SSHD_CONFIG}"
   grep "AllowUsers" "${SSHD_CONFIG}"
   grep "PasswordAuthentication" "${SSHD_CONFIG}"
+  echo ""
+} >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+
+{ echo ""
+  echo "ssh ${NEW_USER}@${MY_IP} -p ${SSH_PORT}"
+  echo ""
+  echo "~/.ssh/config example:"
+  echo "Host ${HOSTNAME}_${NEW_USER}"
+  echo "    HostName ${MY_IP}"
+  echo "    User ${NEW_USER}"
+  echo "    Port ${SSH_PORT}"
+  echo "    IdentityFile ~/.ssh/your_main_key"
 } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 
 cat <<-EOF
@@ -467,6 +496,15 @@ Host ${HOSTNAME}_${NEW_USER}
 EOF
 
 if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
+
+  { echo ""
+    echo "Host ${HOSTNAME}_${GIT_SYSTEM_USER}"
+    echo "    HostName ${MY_IP}"
+    echo "    User ${GIT_SYSTEM_USER}"
+    echo "    Port ${SSH_PORT}"
+    echo "    IdentityFile ~/.ssh/your_main_key"
+  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+
   cat <<-EOF
 
 ${GREEN}Remember! You have ${GIT_SYSTEM_USER} user!${RESET}
@@ -481,6 +519,8 @@ Host ${HOSTNAME}_${GIT_SYSTEM_USER}
 
 EOF
 fi
+
+chown -R "${NEW_USER}":"${NEW_USER}" /home/"${NEW_USER}"
 
 ############################################################
 # Reboot                                                   #
