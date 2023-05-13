@@ -110,7 +110,8 @@ fi
 section_message "umask"
 read -r -p "Add umask 002? (y/n): " UMASK_002
 if [ "${UMASK_002}" = "y" ]; then
-  echo "umask 002" >>/etc/profile
+  umask 002
+  echo "umask 002" >> /etc/profile
   source /etc/profile
   success_message "umask 002 added to /etc/profile"
 fi
