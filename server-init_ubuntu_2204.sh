@@ -45,6 +45,7 @@ setup_color() {
 }
 
 DELIMITER="----------"
+REPORT_FILE="report.txt"
 
 setup_color
 
@@ -169,6 +170,21 @@ if [ "${NEW_USER_PUBLIC_KEY_ANSWER}" = "y" ]; then
   success_message "Key added to /home/${NEW_USER}/.ssh/authorized_keys!"
 fi
 
+mkdir /home/"${NEW_USER}"/scripts
+mkdir /home/"${NEW_USER}"/backups
+
+{ echo date
+  echo ""
+  echo "ssh ${NEW_USER}@${MY_IP} -p ${SSH_PORT}"
+  echo ""
+  echo "~/.ssh/config example:"
+  echo "Host ${HOSTNAME}_${NEW_USER}"
+  echo "    HostName ${MY_IP}"
+  echo "    User ${NEW_USER}"
+  echo "    Port ${SSH_PORT}"
+  echo "    IdentityFile ~/.ssh/your_main_key"
+} >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+
 success_message "User ${NEW_USER} has become sudo!"
 
 ############################################################
@@ -225,6 +241,15 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
 
   mkdir /home/"${GIT_SYSTEM_USER}"/apps
   mkdir /home/"${GIT_SYSTEM_USER}"/repos
+  mkdir /home/"${GIT_SYSTEM_USER}"/backups
+
+  { echo ""
+    echo "Host ${HOSTNAME}_${GIT_SYSTEM_USER}"
+    echo "    HostName ${MY_IP}"
+    echo "    User ${GIT_SYSTEM_USER}"
+    echo "    Port ${SSH_PORT}"
+    echo "    IdentityFile ~/.ssh/your_main_key"
+  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 
   success_message "Created dir /srv/${GIT_SYSTEM_USER}"
 
@@ -243,23 +268,25 @@ if [ "${UFW_INSTALL}" = "y" ]; then
   echo "New port for ssh:"
   read -r SSH_PORT
 
+  SSHD_CONFIG="/etc/ssh/sshd_config"
+
   cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
   success_message "Created ssh config backup /etc/ssh/sshd_config.bak"
 
   # Disable root login
-  sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+  sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' "${SSHD_CONFIG}"
 
   # Setup max auth tries
-  sed -i 's/#MaxAuthTries 6/MaxAuthTries 3/g' /etc/ssh/sshd_config
+  sed -i 's/#MaxAuthTries 6/MaxAuthTries 3/g' "${SSHD_CONFIG}"
 
   # Disable empty passwords
-  sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/g' /etc/ssh/sshd_config
+  sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/g' "${SSHD_CONFIG}"
 
   # Change ssh port
-  sed -i "s/#Port 22/Port ${SSH_PORT}/g" /etc/ssh/sshd_config
+  sed -i "s/#Port 22/Port ${SSH_PORT}/g" "${SSHD_CONFIG}"
 
   # Disable X11Forwarding
-  sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
+  sed -i "s/X11Forwarding yes/X11Forwarding no/g" "${SSHD_CONFIG}"
 
   # Users who allow to connect
   {
@@ -400,12 +427,26 @@ df --print-type --human-readable
 HOSTNAME=$(hostname)
 
 success_message "Actual ssh config:"
-grep "PermitRootLogin" /etc/ssh/sshd_config
-grep "MaxAuthTries" /etc/ssh/sshd_config
-grep "PermitEmptyPasswords" /etc/ssh/sshd_config
-grep "Port" /etc/ssh/sshd_config
-grep "AllowUsers" /etc/ssh/sshd_config
-grep "PasswordAuthentication" /etc/ssh/sshd_config
+grep "PermitRootLogin" "${SSHD_CONFIG}"
+grep "MaxAuthTries" "${SSHD_CONFIG}"
+grep "PermitEmptyPasswords" "${SSHD_CONFIG}"
+grep "Port" "${SSHD_CONFIG}"
+grep "AllowUsers" "${SSHD_CONFIG}"
+grep "PasswordAuthentication" "${SSHD_CONFIG}"
+
+{ echo ""
+  df --print-type --human-readable
+  echo ""
+  free --human
+  echo ""
+  echo "ssh config: ${SSHD_CONFIG}"
+  grep "PermitRootLogin" "${SSHD_CONFIG}"
+  grep "MaxAuthTries" "${SSHD_CONFIG}"
+  grep "PermitEmptyPasswords" "${SSHD_CONFIG}"
+  grep "Port" "${SSHD_CONFIG}"
+  grep "AllowUsers" "${SSHD_CONFIG}"
+  grep "PasswordAuthentication" "${SSHD_CONFIG}"
+} >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 
 cat <<-EOF
 
@@ -421,7 +462,7 @@ Host ${HOSTNAME}_${NEW_USER}
     HostName ${MY_IP}
     User ${NEW_USER}
     Port ${SSH_PORT}
-    IdentityFile ~/.ssh/...
+    IdentityFile ~/.ssh/your_main_key
 
 EOF
 
@@ -436,7 +477,7 @@ Host ${HOSTNAME}_${GIT_SYSTEM_USER}
     HostName ${MY_IP}
     User ${GIT_SYSTEM_USER}
     Port ${SSH_PORT}
-    IdentityFile ~/.ssh/...
+    IdentityFile ~/.ssh/your_main_key
 
 EOF
 fi

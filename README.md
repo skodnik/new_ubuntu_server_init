@@ -16,6 +16,7 @@
 
 1. Добавляет системного пользователя git.
 2. Позволяет для новых пользователей добавлять ssh ключи. Для git с ограниченными правами.
+3. Формирует файл отчет в который размещает служебную информацию.
 
 ```shell
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_ubuntu_2204.sh)"
