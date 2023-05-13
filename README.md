@@ -71,3 +71,16 @@ cp zshrc_example ~/.zshrc && \
 rm zshrc_example && \
 source ~/.zshrc
 ```
+
+## Установка корневых сертификатов Сбер
+
+**Делайте это понимая зачем и почему это нужно!**.
+
+```shell
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/ubuntu_2204_install_sber_certs.sh)"
+```
+
+Проверить корректность установки.
+
+```shell
+curl https://3dsecmt.sberbank.ru/payment/webservices/merchant-ws?wsdl

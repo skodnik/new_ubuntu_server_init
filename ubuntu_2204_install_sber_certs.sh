@@ -30,3 +30,5 @@ cp russian_trusted_root_ca_pem.crt /usr/local/share/ca-certificates/russian_trus
 cp russian_trusted_sub_ca_pem.crt /usr/local/share/ca-certificates/russian_trusted_sub_ca_pem.crt
 
 update-ca-certificates
+
+echo "For check run: curl https://3dsecmt.sberbank.ru/payment/webservices/merchant-ws?wsdl"
