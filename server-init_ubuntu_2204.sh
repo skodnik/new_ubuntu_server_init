@@ -17,7 +17,7 @@ uname -a
   echo ""
   echo "uname: $(uname -a)"
   echo ""
-} >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+} >> "${REPORT_FILE}"
 
 read -r -p "Init server now? (y/n): " INIT
 case "${INIT}" in
@@ -118,7 +118,7 @@ fi
 { echo ""
   echo "umask: $(umask)"
   echo ""
-} >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+} >> "${REPORT_FILE}"
 
 ############################################################
 # Install system base apps                                 #
@@ -153,7 +153,7 @@ if [ "${GIT_SETUP}" = "y" ]; then
     echo "git --version: $(git --version)"
     echo "git config --global --list: $(git config --global --list)"
     echo ""
-  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+  } >> "${REPORT_FILE}"
 fi
 
 ############################################################
@@ -310,7 +310,7 @@ if [ "${UFW_INSTALL}" = "y" ]; then
   { echo ""
     echo "ufw --version: $(ufw --version)"
     echo ""
-  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+  } >> "${REPORT_FILE}"
 fi
 
 ############################################################
@@ -344,7 +344,7 @@ if [ "${DOCKER_INSTALL}" = "y" ]; then
     echo "docker --version: $(docker --version)"
     echo "docker-compose --version: $(docker-compose --version)"
     echo ""
-  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+  } >> "${REPORT_FILE}"
 fi
 
 ############################################################
@@ -381,7 +381,7 @@ if [ "${NGINX_INSTALL}" = "y" ]; then
     echo "nginx -v: $(nginx -v)"
     echo "certbot --version: $(certbot --version)"
     echo ""
-  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+  } >> "${REPORT_FILE}"
 fi
 
 ############################################################
@@ -464,7 +464,7 @@ grep "PasswordAuthentication" "${SSHD_CONFIG}"
   grep "AllowUsers" "${SSHD_CONFIG}"
   grep "PasswordAuthentication" "${SSHD_CONFIG}"
   echo ""
-} >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+} >> "${REPORT_FILE}"
 
 { echo ""
   echo "ssh ${NEW_USER}@${MY_IP} -p ${SSH_PORT}"
@@ -475,7 +475,7 @@ grep "PasswordAuthentication" "${SSHD_CONFIG}"
   echo "    User ${NEW_USER}"
   echo "    Port ${SSH_PORT}"
   echo "    IdentityFile ~/.ssh/your_main_key"
-} >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+} >> "${REPORT_FILE}"
 
 cat <<-EOF
 
@@ -503,7 +503,7 @@ if [ "${GIT_SYSTEM_USER_SETUP}" = "y" ]; then
     echo "    User ${GIT_SYSTEM_USER}"
     echo "    Port ${SSH_PORT}"
     echo "    IdentityFile ~/.ssh/your_main_key"
-  } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
+  } >> "${REPORT_FILE}"
 
   cat <<-EOF
 
