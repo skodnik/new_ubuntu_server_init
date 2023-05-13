@@ -13,9 +13,9 @@ REPORT_FILE="report.txt"
 
 uname -a
 
-{ echo date
+{ echo "date: $(date)"
   echo ""
-  uname -a
+  echo "uname: $(uname -a)"
   echo ""
 } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 
@@ -150,8 +150,8 @@ if [ "${GIT_SETUP}" = "y" ]; then
   git --version
 
   { echo ""
-    git --version
-    git config --global --list
+    echo "git --version: $(git --version)"
+    echo "git config --global --list: $(git config --global --list)"
     echo ""
   } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 fi
@@ -308,7 +308,7 @@ if [ "${UFW_INSTALL}" = "y" ]; then
   ufw status verbose
 
   { echo ""
-    ufw status verbose
+    echo "ufw --version: $(ufw --version)"
     echo ""
   } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 fi
@@ -341,8 +341,8 @@ if [ "${DOCKER_INSTALL}" = "y" ]; then
   docker-compose --version
 
   { echo ""
-    docker --version
-    docker-compose --version
+    echo "docker --version: $(docker --version)"
+    echo "docker-compose --version: $(docker-compose --version)"
     echo ""
   } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 fi
@@ -378,8 +378,8 @@ if [ "${NGINX_INSTALL}" = "y" ]; then
   fi
 
   { echo ""
-    nginx -v
-    certbot --version
+    echo "nginx -v: $(nginx -v)"
+    echo "certbot --version: $(certbot --version)"
     echo ""
   } >> /home/"${NEW_USER}"/"${REPORT_FILE}"
 fi
@@ -452,9 +452,9 @@ grep "AllowUsers" "${SSHD_CONFIG}"
 grep "PasswordAuthentication" "${SSHD_CONFIG}"
 
 { echo ""
-  df --print-type --human-readable
+  echo "df --print-type --human-readable: $(df --print-type --human-readable)"
   echo ""
-  free --human
+  echo "free --human: $(free --human)"
   echo ""
   echo "ssh config: ${SSHD_CONFIG}"
   grep "PermitRootLogin" "${SSHD_CONFIG}"
