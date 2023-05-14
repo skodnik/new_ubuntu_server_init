@@ -67,6 +67,15 @@ alias scrd="sudo certbot renew --dry-run"
 # Renew all previously obtained certificates that are near
 alias scr="sudo certbot renew"
 
+# Backup certbot data
+alias bcc="sudo tar zcvf /home/user/backups/certbot/letsencrypt_backup_$(date +'%Y-%m-%d_%H%M').tar.gz /etc/letsencrypt"
+
+# Check archived certbot data example: ccc /home/user/backups/certbot/letsencrypt_backup_2020-05-14_2031.tar.gz
+alias ccc="tar tvf"
+
+# Restore certbot data example: rcc /home/user/backups/certbot/letsencrypt_backup_2020-05-14_2031.tar.gz -C /
+alias rcc="tar zxvf"
+
 
 ##################################################
 # Docker                                         #
