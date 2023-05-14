@@ -23,11 +23,11 @@ case "${INIT}" in
   ;;
 esac
 
-wget https://gu-st.ru/content/lending/russian_trusted_root_ca_pem.crt
-wget https://gu-st.ru/content/lending/russian_trusted_sub_ca_pem.crt
+curl https://gu-st.ru/content/lending/russian_trusted_root_ca_pem.crt \
+--output /usr/local/share/ca-certificates/russian_trusted_root_ca_pem.crt
 
-cp russian_trusted_root_ca_pem.crt /usr/local/share/ca-certificates/russian_trusted_root_ca_pem.crt
-cp russian_trusted_sub_ca_pem.crt /usr/local/share/ca-certificates/russian_trusted_sub_ca_pem.crt
+curl https://gu-st.ru/content/lending/russian_trusted_sub_ca_pem.crt \
+--output /usr/local/share/ca-certificates/russian_trusted_sub_ca_pem.crt
 
 update-ca-certificates
 
