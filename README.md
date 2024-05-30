@@ -72,6 +72,21 @@ rm zshrc_example && \
 source ~/.zshrc
 ```
 
+## Установка зеркал для docker hub
+
+**Делайте это понимая зачем и почему это нужно!**.
+
+```shell
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/ubuntu_2204_install_docker_hub_mirrors.sh)"
+```
+
+Проверить доступность образов.
+
+```shell
+docker run hello-world
+```
+
+
 ## Установка корневых сертификатов Сбер
 
 **Делайте это понимая зачем и почему это нужно!**.
@@ -84,3 +99,4 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_
 
 ```shell
 curl https://3dsecmt.sberbank.ru/payment/webservices/merchant-ws?wsdl
+```
