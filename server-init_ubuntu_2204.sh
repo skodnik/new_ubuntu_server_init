@@ -346,6 +346,25 @@ if [ "${DOCKER_INSTALL}" = "y" ]; then
     echo "docker-compose --version: $(docker-compose --version)"
     echo ""
   } >> "${REPORT_FILE}"
+
+  read -r -p "Install docker hub mirrors? (y/n): " DOCKER_HUB_MIRRORS_INSTALL
+  if [ "${DOCKER_INSTALL}" = "y" ]; then
+    cat << EOF > /etc/docker/daemon.json
+{
+  "registry-mirrors": [
+    "https://mirror.gcr.io",
+    "https://daocloud.io",
+    "https://c.163.com/",
+    "https://registry.docker-cn.com"
+  ]
+}
+EOF
+
+    { echo ""
+      echo "Docker hub mirrors installed"
+      echo ""
+    } >> "${REPORT_FILE}"
+  fi
 fi
 
 ############################################################
