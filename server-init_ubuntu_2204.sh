@@ -352,10 +352,7 @@ if [ "${DOCKER_INSTALL}" = "y" ]; then
     cat << EOF > /etc/docker/daemon.json
 {
   "registry-mirrors": [
-    "https://mirror.gcr.io",
-    "https://daocloud.io",
-    "https://c.163.com/",
-    "https://registry.docker-cn.com"
+    "https://mirror.gcr.io"
   ]
 }
 EOF
