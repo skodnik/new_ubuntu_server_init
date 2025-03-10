@@ -50,7 +50,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_
 ### Корректировка hostname (если почему-то не изменился)
 
 ```shell
-sudo hostname new-host-name
+sudo hostnamectl set-hostname new-host-name
 ```
 
 ### Настройка zsh и oh-my-zsh
