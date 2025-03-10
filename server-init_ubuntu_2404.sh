@@ -57,16 +57,16 @@ DELIMITER="----------"
 setup_color
 
 section_message() {
-  echo -e "\n${YELLOW}${DELIMITER} $1 ${DELIMITER}${RESET}\n"
+  printf "\n%s%s %s %s%s\n\n" "${YELLOW}" "${DELIMITER}" "$1" "${DELIMITER}" "${RESET}"
 }
 
 error_message_and_exit() {
-  echo "${RED}$1${RESET}"
+  printf "%s%s%s\n" "${RED}" "$1" "${RESET}"
   exit 1
 }
 
 success_message() {
-  echo "${GREEN}$1${RESET}"
+  printf "%s%s%s\n" "${GREEN}" "$1" "${RESET}"
 }
 
 ############################################################
