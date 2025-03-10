@@ -5,18 +5,23 @@
 1. Устанавливает ufw fail2ban make ntp.
 2. Спрашивает имя нового пользователя и создает его, добавляет в группу sudo.
 3. Настраивает ufw фаервол. Спрашивает новый порт для ssh.
-4. Устанавливает mc ncdu zsh.
+4. Устанавливает ncdu htop.
 5. Спрашивает и устанавливает docker-ec docker-compose из официального Docker репозитория.
 6. Спрашивает и устанавливает временную зону Europe/Moscow.
 7. "Сбрасывает" пароль для рута.
 
-> todo: Подумать над настройками fail2ban
 
-### Ubuntu 22.04
+### Ubuntu 24.04
 
 1. Добавляет системного пользователя git.
 2. Позволяет для новых пользователей добавлять ssh ключи. Для git с ограниченными правами.
 3. Формирует файл отчет в который размещает служебную информацию.
+
+```shell
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_ubuntu_2404.sh)"
+```
+
+### Ubuntu 22.04
 
 ```shell
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_ubuntu_2204.sh)"
