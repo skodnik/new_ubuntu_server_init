@@ -328,7 +328,7 @@ apt install --yes ncdu htop
 section_message "docker setting up"
 read -r -p "Install docker? (y/n): " DOCKER_INSTALL
 if [ "${DOCKER_INSTALL}" = "y" ]; then
-  apt install --yes install ca-certificates curl
+  apt install --yes ca-certificates curl
   install -m 0755 -d /etc/apt/keyrings
   sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
   sudo chmod a+r /etc/apt/keyrings/docker.asc
