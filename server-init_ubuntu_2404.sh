@@ -85,7 +85,8 @@ if [ "${SETUP_HOSTNAME}" = "y" ]; then
   hostname
   echo "New hostname (only '-' allowed, example: new-host-name):"
   read -r NEW_HOST_NAME
-  hostname "${NEW_HOST_NAME}"
+  hostnamectl set-hostname "${NEW_HOST_NAME}"
+  success_message "Hostname set to ${NEW_HOST_NAME}"
 fi
 
 ############################################################
@@ -124,8 +125,8 @@ fi
 ############################################################
 # Install system base apps                                 #
 ############################################################
-section_message "install ufw fail2ban make ntp restic"
-apt install --yes ufw fail2ban make ntp restic
+section_message "install ufw fail2ban make restic"
+apt install --yes ufw fail2ban make restic
 
 ############################################################
 # Setup git                                                #
@@ -401,12 +402,6 @@ if [ "${NGINX_INSTALL}" = "y" ]; then
     echo ""
   } >> "${REPORT_FILE}"
 fi
-
-############################################################
-# Enable ntp                                               #
-############################################################
-section_message "ntp"
-systemctl enable ntp
 
 ############################################################
 # Cleaning up                                              #
