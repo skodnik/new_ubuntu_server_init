@@ -21,6 +21,9 @@
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/skodnik/new_ubuntu_server_init/master/server-init_ubuntu_2404.sh)"
 ```
 
+В версии Fail2Ban v1.0.2 раскомментировать параметр `allowipv6 = auto` [fail2ban](fail2ban.md).
+
+
 ### Ubuntu 22.04
 
 ```shell
