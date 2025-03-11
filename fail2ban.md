@@ -29,5 +29,11 @@ sudo systemctl status fail2ban
 Конфиг.
 
 ```shell
-vim /etc/fail2ban/fail2ban.conf
+sudo vim /etc/fail2ban/fail2ban.conf
+```
+
+Если в статусе `loaded (/lib/systemd/system/fail2ban.service; disabled; vendor preset: enabled)`, т.е. disabled:
+
+```shell
+sudo systemctl enable fail2ban
 ```
